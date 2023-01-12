@@ -1,0 +1,28 @@
+<div class="login-dark">
+  <form method="post" [formGroup]="formGroup" (ngSubmit)="login()">
+      <h2 class="sr-only">Login</h2>
+      <div class="illustration"><i class="icon ion-home"></i></div>
+      <div class="form-group">
+          <input class="form-control" type="email" [(ngModel)]="email"
+              [ngClass]="{'is-valid': c.email.valid, 'is-invalid': c.email.invalid && (c.email.dirty || c.email.touched)}"
+              name="email" formControlName="email" placeholder="Email">
+          <div class="invalid-feedback">
+              Email required
+          </div>
+      </div>
+      <div class="form-group">
+          <input class="form-control" type="password" [(ngModel)]="password"
+              [ngClass]="{'is-valid': c.password.valid, 'is-invalid': c.password.invalid && (c.password.dirty || c.password.touched)}"
+              name="password" formControlName="password" placeholder="Mot de passe">
+          <div class="invalid-feedback">
+              Password required
+          </div>
+      </div>
+      <div class="form-group">
+          <button *ngIf="!loader" [disabled]="loader || !formGroup.valid" class="btn btn-primary btn-block"
+              type="submit">Se Connecter</button>
+          <button *ngIf="loader" class="btn btn-primary btn-block" type="button" disabled><i
+                  class="fa fa-spinner fa-spin"></i> Connexion en cours...</button>
+      </div>
+  </form>
+</div>
