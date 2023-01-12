@@ -1,15 +1,11 @@
-# Avcocat Depoch
-Backend Avocat Depoch app
-``
+Authentification client:
+    email: meva@gmail.com
+    passwor: meva123
 
-## Installation
+Authentification responsable atelier:
+    email: atelier@gmail.com
+    passwor: atelier
 
-```bash
-yarn
-```
-
-## DEV
-
-```bash
-yarn dev
-```
+Authentification responsable financier:
+    email: financier@gmail.com
+    passwor: financier
