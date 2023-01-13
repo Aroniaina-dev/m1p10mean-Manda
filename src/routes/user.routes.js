@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const userDb = require('../db/user.db');
-const User = require('../models/user')
+const User = require('../models/user');
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const multer = require('multer')
+const uuid = require('uuid')
 
 router.get('/generate', async (req, res) => {
     try {
@@ -34,7 +38,7 @@ router.get('/', async (req, res) => {
         console.log('get All User')
         const filter = {}
         if (req.query.id) filter._id = req.query.id
-        const result = await Droit.find(filter, null, { sort: { updatedAt: 1 } })
+        const result = await User.find(filter, null, { sort: { updatedAt: 1 } })
         res.json(result)
     } catch (error) {
         console.log(error)
@@ -42,13 +46,56 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        console.log('save User', req.body)
-        let user = new User(req.body)
-        user = await droit.save()
-        console.log('new', user)
-        res.json(user)
+        const filter = {}
+        let good = false
+        if (req.body.email) filter.email = req.body.email
+        else return res.status(400).json({ msg: 'Email requis' })
+        // else return res.status(400).json({ msg: 'Nom d\'utilisateur requis' })
+        const result = await User.findOne(filter)
+        if (!result) return res.status(404).json({ msg: 'Utilisateur non trouvé' })
+        if (req.body.password) good = await bcrypt.compare(req.body.password, result.password)
+        else return res.status(400).json({ msg: 'Mot de passe requis' })
+        if (good) {
+            const token = jwt.sign(
+                { userId: result._id, email: result.email, username: result.usename },
+                process.env.TOKEN_KEY,
+                { expiresIn: "24h" }
+            )
+            delete result.password
+            res.send({ user: result, token })
+        }
+        else res.status(403).json({ msg: 'Mot de passe incorrect' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.post('/signup', async (req, res) => {
+    try {
+        console.log('signup', req.body)
+        const user = new User(req.body)
+        const result = await User.findOne({ $or: [{ email: user.email }, { nom: user.nom }] })
+        console.log('result', result)
+        if (result) {
+            res.status(409).json({ msg: "L'utilisateur existe déjà" })
+            return
+        }
+        const dateLimit = new Date();
+        dateLimit.setDate(dateLimit.getDate() + 1);
+        user.activated = false
+        user.activationLimit = dateLimit
+        user.password = await bcrypt.hash(user.password, 10)
+        user.activationCode = Math.floor(100000 + Math.random() * 900000)
+        user.roles = []
+        delete user._id
+        await user.save()
+        const newUser = await User.findOne({ email: user.email }).select('-password')
+        // delete newUser.password
+        console.log('new', newUser)
+        res.send(newUser)
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
@@ -65,7 +112,7 @@ router.put('/', async (req, res) => {
             res.status(404).json({ success: false, msg: "ID required" })
             return
         }
-        const user = await Droit.findOneAndUpdate(filter, data)
+        const user = await User.findOneAndUpdate(filter, data)
         res.json(user)
     } catch (error) {
         console.log(error)

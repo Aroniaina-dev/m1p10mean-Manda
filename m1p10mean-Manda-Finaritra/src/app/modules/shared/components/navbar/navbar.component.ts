@@ -25,10 +25,9 @@ export class NavbarComponent implements OnInit {
 
   lougout() {
     const isLoggedOut = this.authentificationService.loggedOut();
-    console.log(isLoggedOut);
-    this.router.navigate(['admin/login']);
+    this.router.navigate(['login']);
     if (isLoggedOut) {
-      this.router.navigate(['admin/login']);
+      this.router.navigate(['login']);
     }
   }
   clickToggled(): void {

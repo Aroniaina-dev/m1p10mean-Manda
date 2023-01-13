@@ -25,7 +25,7 @@ app.use('/', routes);
 
 //liste des routes pour l'application
 app.use('/api/materiel/', materielRoute);
-app.use('/api', userRoute);
+app.use('/api/user/', userRoute);
 app.use('/api/voiture/', voitureRoute);
 
 app.listen(port, () => {

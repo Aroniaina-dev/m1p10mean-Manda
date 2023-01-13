@@ -1,0 +1,107 @@
+<div id="page-top">
+    <div id="wrapper">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <h1 style="text-align: center;">S'inscrire</h1>
+                            <form [formGroup]="formGroup" (ngSubmit)="signUp()">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Nom :</label>
+                                                                <input type="text" class="form-control"
+                                                                    formControlName="nom" [(ngModel)]="nom"
+                                                                    [ngClass]="{'is-valid': c.nom.valid, 'is-invalid': c.nom.invalid && (c.nom.dirty || c.nom.touched)}">
+                                                                <div class="invalid-feedback">
+                                                                    Veuillez remplir le champ
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>prenom :</label>
+                                                                <input type="text" class="form-control"
+                                                                    formControlName="prenom" [(ngModel)]="prenom"
+                                                                    [ngClass]="{'is-valid': c.prenom.valid, 'is-invalid': c.prenom.invalid && (c.prenom.dirty || c.prenom.touched)}">
+                                                                <div class="invalid-feedback">
+                                                                    Veuillez remplir le champ
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>email :</label>
+                                                                <input type="email" class="form-control"
+                                                                    formControlName="email" [(ngModel)]="email"
+                                                                    [ngClass]="{'is-valid': c.email.valid, 'is-invalid': c.email.invalid && (c.email.dirty || c.email.touched)}">
+                                                                <div class="invalid-feedback">
+                                                                    Veuillez remplir le champ
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label>password :</label>
+                                                                <input type="password" class="form-control"
+                                                                    formControlName="password" [(ngModel)]="password"
+                                                                    [ngClass]="{'is-valid': c.password.valid, 'is-invalid': c.password.invalid && (c.password.dirty || c.password.touched)}">
+                                                                <div class="invalid-feedback">
+                                                                    Veuillez remplir le champ
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label>phone :</label>
+                                                                <input type="text" class="form-control"
+                                                                    formControlName="phone" [(ngModel)]="phone"
+                                                                    [ngClass]="{'is-valid': c.phone.valid, 'is-invalid': c.phone.invalid && (c.phone.dirty || c.phone.touched)}">
+                                                                <div class="invalid-feedback">
+                                                                    Veuillez remplir le champ
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <select class="form-control" #teams (change)="onSelected(teams.value)" name="loginType" aria-label="Default select example">
+                                                                    <option selected>Type d'utilisateur</option>
+                                                                    <option value="1">Atelier</option>
+                                                                    <option value="2">Financier</option>
+                                                                </select>
+                                                            </div>
+                                                    
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <img [src]="imagePath" ngIf="isImage"> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-right">
+                                        <button
+                                            class="btn btn-primary btn-block" type="submit">S'inscrire</button>
+                                        <button *ngIf="loader" class="btn btn-primary btn-block" type="button"
+                                            disabled><i class="fa fa-spinner fa-spin"></i> Inscription en
+                                            cours...</button>
+                                        <button *ngIf="!loader" [disabled]="loader" class="btn btn-success btn-block"
+                                            type="button" (click)="login()">Se Connecter</button>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ajouter catégorie droit-->

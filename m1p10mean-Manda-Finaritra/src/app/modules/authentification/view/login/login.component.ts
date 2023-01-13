@@ -36,40 +36,44 @@ export class LoginComponent implements OnInit {
     return this.formGroup.controls;
   }
 
-  // login(): void {
-  //   if (this.formGroup.valid) {
-  //     this.loader = true;
-  //     this.authentificationService.login(this.email, this.password).subscribe(res => {
-  //       this.loader = false;
-  //       if (res) {
-  //         this.authentificationService.storeUserData(res.token, res.user);
-  //         this.router.navigate(['/admin/droit']);
-  //       }
-  //     }, error => {
-  //       this.loader = false;
-  //       this.toastr.error(error.error.msg);
-  //     });
-  //   } else {
-  //     this.toastr.warning("Un des format de vos champs est incorrect");
-  //   }
-  // }
-
   login(): void {
     if (this.formGroup.valid) {
-      this.load = true;
-      var email = this.formGroup.get('email')?.value;
-      var mdp = this.formGroup.get('password')?.value;
-      if (email == "bdbgperformance@gmail.com") {
-        if (mdp == "Richamed91:") {
+      this.loader = true;
+      this.authentificationService.login(this.email, this.password).subscribe(res => {
+        this.loader = false;
+        if (res) {
+          this.authentificationService.storeUserData(res.token, res.user);
           this.router.navigate(['/atelier']);
         }
-      } else {
-        this.toastr.error("Erreur d'authentification");
-      }
+      }, error => {
+        this.loader = false;
+        this.toastr.error(error.error.msg);
+      });
     } else {
       this.toastr.warning("Un des format de vos champs est incorrect");
     }
   }
+
+  signUp() {
+    this.router.navigate(['/login/signUp']);
+  }
+
+  // login(): void {
+  //   if (this.formGroup.valid) {
+  //     this.load = true;
+  //     var email = this.formGroup.get('email')?.value;
+  //     var mdp = this.formGroup.get('password')?.value;
+  //     if (email == "bdbgperformance@gmail.com") {
+  //       if (mdp == "Richamed91:") {
+  //         this.router.navigate(['/atelier']);
+  //       }
+  //     } else {
+  //       this.toastr.error("Erreur d'authentification");
+  //     }
+  //   } else {
+  //     this.toastr.warning("Un des format de vos champs est incorrect");
+  //   }
+  // }
 
 
 }

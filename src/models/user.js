@@ -15,11 +15,12 @@ const schema = new Schema({
         materiel: [{
         designationMateriel: {type: String, required: true},
         prixReparation: { type: Number, required: true},
-        dateFinReparation: {type: Date}
+        dateFinReparation: {type: Date},
         }],
+        estDansLeGarage: {type: Boolean},
         dateEntrerGarage: { type: Date},
         dateSortieGarage: { type: Date}
     }],
 }, { timestamps: true });
 
-module.exports = User = mongoose.model('User', schema)
+module.exports = User = mongoose.model('Users', schema)

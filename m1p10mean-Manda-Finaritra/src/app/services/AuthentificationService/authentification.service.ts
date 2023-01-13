@@ -70,6 +70,7 @@ export class AuthentificationService {
    */
   loggedIn(): boolean {
     const token: string | undefined = this.getToken();
+    console.log(token);
     if (token) {
       if (this.tokenExpired(token)) {
         this.clearUserStorage();
@@ -155,7 +156,7 @@ export class AuthentificationService {
    * @param password | String le mot de passe du client
    */
   login(email: string, password: string): Observable<{ user: User, token: string }> {
-    return this.httpClient.post<{ user: User, token: string }>(environment.end_point + 'login', {
+    return this.httpClient.post<{ user: User, token: string }>(environment.end_point + 'user/login', {
       email: email,
       password: password
     });
@@ -166,7 +167,7 @@ export class AuthentificationService {
    * @param user | User model user
    */
   signUp(user: User): Observable<HttpResponseModel<User>> {
-    return this.httpClient.post<HttpResponseModel<User>>(environment.end_point + 'signup', user);
+    return this.httpClient.post<HttpResponseModel<User>>(environment.end_point + 'user/signup', user);
   }
 
   /**
