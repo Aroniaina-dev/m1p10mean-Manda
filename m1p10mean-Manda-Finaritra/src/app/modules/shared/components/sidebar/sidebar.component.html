@@ -2,7 +2,12 @@
   [ngClass]="{'toggled': minify}">
   <div class="container-fluid d-flex flex-column p-0">
     <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
-      [routerLink]="['/atelier']">
+      *ngIf="user.loginType ==1" [routerLink]="['/atelier']">
+      <div class="sidebar-brand-icon rotate-n-15"></div>
+      <div class="sidebar-brand-text mx-3"><span>m1p10mean&nbsp;</span></div>
+    </a>
+    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+      *ngIf="user.loginType ==2" [routerLink]="['/financier']">
       <div class="sidebar-brand-icon rotate-n-15"></div>
       <div class="sidebar-brand-text mx-3"><span>m1p10mean&nbsp;</span></div>
     </a>
@@ -15,16 +20,16 @@
           <a class="dropdown-item" role="presentation" [routerLink]="['/atelier']" [routerLinkActive]="'active'"
             [routerLinkActiveOptions]="{exact: true}">Liste dans l'atelier</a>
           <a class=" dropdown-item" role="presentation" [routerLink]="['/atelier/liste_voiture']"
-            [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Liste voiture</a>
+            [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Liste voiture garager</a>
         </div>
       </li>
       <li class="nav-item dropdown" *ngIf="user.loginType ==2">
         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
           <span>Liste paiment & stat</span></a>
         <div class="dropdown-menu" role="menu">
-          <a class="dropdown-item" role="presentation" [routerLink]="['/atelier']" [routerLinkActive]="'active'"
+          <a class="dropdown-item" role="presentation" [routerLink]="['/financier']" [routerLinkActive]="'active'"
             [routerLinkActiveOptions]="{exact: true}">Liste paiement</a>
-          <a class=" dropdown-item" role="presentation" [routerLink]="['/atelier/liste_voiture']"
+          <a class=" dropdown-item" role="presentation" [routerLink]="['/financier/stat']"
             [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">stat</a>
         </div>
       </li>

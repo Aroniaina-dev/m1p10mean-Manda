@@ -1,18 +1,10 @@
-const bcrypt = require("bcrypt");
-const client1 = bcrypt.hash("client1", 10);
-const client2 = bcrypt.hash("client2", 10);
-const atelier1 = bcrypt.hash("atelier1", 10);
-const atelier2 = bcrypt.hash("atelier2", 10);
-const financier1 = bcrypt.hash("financier1", 10);
-const financier2 = bcrypt.hash("financier2", 10);
-
 
 module.exports = users = [
     {
         "nom": 'Client 1',
         "prenom": 'Valeur 1',
         "email": "client1@gmail.com",
-        "password": client1,
+        "password": "client1",
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [
@@ -23,14 +15,23 @@ module.exports = users = [
                 "materiel": [
                     {
                         "designationMateriel": "Vitre avant",
-                        "prixReparation": 30000
+                        "prixReparation": 30000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                     {
                         "designationMateriel": "Moteur",
-                        "prixReparation": 60000
+                        "prixReparation": 60000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                 ],
-                estDansLeGarage: false
+                estDansLeGarage: false,
+                "dateEntrerGarage": new Date(),
+                "dateSortieGarage": new Date(),
+                estTerminer: false
             },
         ]
     },
@@ -38,7 +39,7 @@ module.exports = users = [
         "nom": 'Client 2',
         "prenom": 'Valeur 2',
         "email": "client2@gmail.com",
-        "password": client2,
+        "password": "client2",
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [
@@ -49,18 +50,30 @@ module.exports = users = [
                 "materiel": [
                     {
                         "designationMateriel": "Valve pneu",
-                        "prixReparation": 10000
+                        "prixReparation": 10000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                     {
                         "designationMateriel": "Vitre avant",
-                        "prixReparation": 30000
+                        "prixReparation": 30000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                     {
                         "designationMateriel": "Moteur",
-                        "prixReparation": 60000
+                        "prixReparation": 60000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                 ],
-                estDansLeGarage: false
+                estDansLeGarage: false,
+                "dateEntrerGarage": new Date(),
+                "dateSortieGarage": new Date(),
+                estTerminer: false
             },
             {
                 "immatriculation": '1011WWT',
@@ -68,19 +81,24 @@ module.exports = users = [
                 "modele": "Type 4",
                 "materiel": [
                     {
-                        "designationMateriel": "Valve pneu",
-                        "prixReparation": 10000
+                        "designationMateriel": "Culasse",
+                        "prixReparation": 10000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                     {
-                        "designationMateriel": "Vitre avant",
-                        "prixReparation": 30000
-                    },
-                    {
-                        "designationMateriel": "Moteur",
-                        "prixReparation": 60000
+                        "designationMateriel": "Embreillage",
+                        "prixReparation": 30000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                 ],
-                estDansLeGarage: false
+                estDansLeGarage: false,
+                "dateEntrerGarage": new Date(),
+                "dateSortieGarage": new Date(),
+                estTerminer: false
             },
             {
                 "immatriculation": '4572TAA',
@@ -89,51 +107,24 @@ module.exports = users = [
                 "materiel": [
                     {
                         "designationMateriel": "Porte",
-                        "prixReparation": 50000
+                        "prixReparation": 50000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                     {
-                        "designationMateriel": "CApitulage",
-                        "prixReparation": 9000
+                        "designationMateriel": "Capitonnage",
+                        "prixReparation": 9000,
+                        "dateDebutReparation": new Date(),
+                        "dateFinReparation": new Date(),
+                        estReparer: false, 
                     },
                 ],
-                estDansLeGarage: false
+                estDansLeGarage: false,
+                "dateEntrerGarage": new Date(),
+                "dateSortieGarage": new Date(),
+                estTerminer: false
             },
         ]
-    },
-    {
-        "nom": 'atelier 1',
-        "prenom": 'atelier 1',
-        "email": "atelier1@gmail.com",
-        "password": atelier1,
-        "phone": "0349496013",
-        "loginType": 1, 
-        voiture: []
-    },
-    {
-        "nom": 'atelier 2',
-        "prenom": 'atelier 2',
-        "email": "atelier2@gmail.com",
-        "password": atelier2,
-        "phone": "0349496013",
-        "loginType": 1, 
-        voiture: []
-    },
-    {
-        "nom": 'financier 1',
-        "prenom": 'financier 1',
-        "email": "financier1@gmail.com",
-        "password": financier1,
-        "phone": "0349496013",
-        "loginType": 1, 
-        voiture: []
-    },
-    {
-        "nom": 'financier 2',
-        "prenom": 'financier 2',
-        "email": "financier2@gmail.com",
-        "password": financier2,
-        "phone": "0349496013",
-        "loginType": 1, 
-        voiture: []
     },
 ]

@@ -33,9 +33,28 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+
+router.get('/atelier/:loginType', async (req, res) => {
+    try {
+        
+        const filter = {}
+        if (req.params.loginType) filter.loginType = req.params.loginType
+        else {
+            res.status(400).json({ msg: 'ID required' })
+            return
+        }
+        const result = await User.find(filter)
+        // console.log("Get all client type: ", result);
+        res.json(result)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
 router.get('/', async (req, res) => {
     try {
-        console.log('get All User')
+        // console.log('get All User')
         const filter = {}
         if (req.query.id) filter._id = req.query.id
         const result = await User.find(filter, null, { sort: { updatedAt: 1 } })
@@ -136,6 +155,68 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+router.put('/voiture/:id', async (req, res) => {
+    try {
+        var voiture_id = req.params.id;
+        const data = req.body
+        // console.log("Update voiture: ", data);
+        // console.log("IdVoiture: ", voiture_id);
+        User.update({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.estDansLeGarage': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                return res.json(model);
+            });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.put('/voiture/:id/:idMateriel', async (req, res) => {
+    try {
+        var voiture_id = req.params.id;
+        var materiel_id = req.params.idMateriel;
+        const data = req.body
+        // console.log("Update voiture: ", data);
+        // console.log("IdVoiture: ", voiture_id);
+        // console.log("idMateriel: ", materiel_id);
+        User.update(
+            {
+                "user._id": data._id,
+                "voiture": {
+                    "$elemMatch": {
+                        "voiture_id": voiture_id, "materiel._id": materiel_id
+                    }
+                }
+            },
+            { "$set": { 
+                "voiture.$[outer].materiel.$[inner].estReparer": true
+            } },
+            { "arrayFilters": [
+                { "outer._id": voiture_id },
+                { "inner._id": materiel_id }
+            ] }, (err, result) => {
+            if (err) {
+                console.log('Error updating service: ' + err);
+                res.send({'error':'An error has occurred'});
+            } else {
+                console.log(result)
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
 
 
 module.exports = router;

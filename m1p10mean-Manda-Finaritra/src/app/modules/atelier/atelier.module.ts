@@ -5,7 +5,7 @@ import { AtelierRoutingModule } from './atelier-routing.module';
 import { ListeAtelierComponent } from './view/liste-atelier/liste-atelier.component';
 import { ListeVoitureComponent } from './view/liste-voiture/liste-voiture.component';
 import { SharedModule } from '../shared/shared.module';
-
+import { NgDragDropModule } from 'ng-drag-drop';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     AtelierRoutingModule,
-    SharedModule
+    SharedModule,
+    NgDragDropModule.forRoot()
   ]
 })
 export class AtelierModule { }

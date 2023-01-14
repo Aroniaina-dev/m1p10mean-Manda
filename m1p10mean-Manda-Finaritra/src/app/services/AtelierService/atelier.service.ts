@@ -15,8 +15,8 @@ export class AtelierService {
   /**
    * Appel de l'api qui permet de recuperer la liste de toutes les Users
    */
-  getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(environment.end_point+'user');
+  getAll(loginType: Number): Observable<User[]> {
+    return this.httpClient.get<User[]>(environment.end_point+"user/atelier/"+loginType);
   }
 
 
@@ -46,6 +46,14 @@ export class AtelierService {
 
 
   getVoitureByID(id: string): Observable<User[]> {
-    return this.httpClient.get<User[]>(environment.end_point + "voiture/"+id);
+    return this.httpClient.get<User[]>(environment.end_point + "voiture");
+  }
+
+  changeStatesGarage(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture/"+idVoiture, user);
+  }
+
+  changeStatesReparer(user: User, idVoiture: string, idMateriel: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture/"+idVoiture+"/"+idMateriel, user);
   }
 }

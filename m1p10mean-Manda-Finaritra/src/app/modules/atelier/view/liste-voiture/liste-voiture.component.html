@@ -4,10 +4,63 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <app-navbar></app-navbar>
-                <div class="container-fluid">
-                    <h3 class="text-dark mb-1">Liste voiture</h3>
+                <div class="container-fluid">                    
                     <div class="row mt-3">
-                        <div class="col">
+                        
+                        <!-- <h3>Transfer Data via Drag Drop</h3>
+                            <div class="col-md-6">
+                                <ul class="list-group">
+                                    <li draggable *ngFor="let item of items" [dragData]="item" class="list-group-item">{{item.name}}</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="panel panel-default" droppable (onDrop)="onItemDrop($event)">
+                                    <div class="panel-heading">Drop Items here</div>
+                                        <div class="panel-body">
+                                        <li *ngFor="let item of droppedItems" class="list-group-item">{{item.name}}</li>
+                                        </div>
+                                </div>
+                            </div> -->
+
+                            
+                        <div class="col-md-6">
+                            <h3 class="text-dark mb-1">Liste voiture à répare</h3>
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Voiture</th>
+                                                    <th colspan="2" class="text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="dataResultUser.length > 0 && !loaderView">     
+                                                <tr *ngFor="let d of dataResultUser; let i = index">
+                                                    <td *ngFor="let v of d.voiture; let j = index">
+                                                        <ul *ngIf="v.estDansLeGarage == true">
+                                                            <li>{{v.marque}} {{v.modele}}</li>
+                                                            <ul *ngFor="let m of v.materiel; let k = index">
+                                                                <li>{{m.designationMateriel}}
+                                                                    <button class="btn btn-warning btn-block btn-sm" *ngIf="m.estReparer == false" (click)="reparer(d, v._id, m._id)">Réparé</button>
+                                                                    <button class="btn btn-success btn-block btn-sm" disabled="true" *ngIf="m.estReparer == true">Réparé</button>
+                                                                </li>                                                                
+                                                            </ul>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <h3 class="text-dark mb-1">Liste voiture terminée</h3>
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -21,35 +74,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>     
-                                                <tr>  
-                                                    <td>1</td>
-                                                    <td>Golf Type 4</td>
-                                                    <td>
-                                                        <ul>
-                                                            <li>Frein</li>
-                                                            <li>Pneu</li>
-                                                        </ul>
-                                                    </td>         
-                                                    <td class="text-center">
-                                                        <button class="btn btn-info btn-block btn-sm">
-                                                            Ajouter dans le garage                                                        </button>
-
-                                                        <button class="btn btn-info btn-block btn-sm">
-                                                            Afficher
-                                                            catégorie
-                                                        </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-primary btn-block btn-sm"> Supprimer
-                                                        </button>
-                                                    </td>                                        
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
