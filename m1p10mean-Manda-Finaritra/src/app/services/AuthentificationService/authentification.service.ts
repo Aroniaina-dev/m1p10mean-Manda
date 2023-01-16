@@ -70,7 +70,6 @@ export class AuthentificationService {
    */
   loggedIn(): boolean {
     const token: string | undefined = this.getToken();
-    console.log(token);
     if (token) {
       if (this.tokenExpired(token)) {
         this.clearUserStorage();

@@ -37,7 +37,7 @@ export class ListeAtelierComponent implements OnInit {
       this.load = true;
       this.atelierService.getAll(0).subscribe((res) => {
         this.dataResultUser = res;
-        // console.log(this.dataResultUser);
+        console.log(this.dataResultUser);
         this.load = false;
       });
     } catch (error) {

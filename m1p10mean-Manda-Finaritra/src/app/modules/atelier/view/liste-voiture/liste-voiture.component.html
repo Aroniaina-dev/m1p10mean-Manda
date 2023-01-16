@@ -6,25 +6,8 @@
                 <app-navbar></app-navbar>
                 <div class="container-fluid">                    
                     <div class="row mt-3">
-                        
-                        <!-- <h3>Transfer Data via Drag Drop</h3>
-                            <div class="col-md-6">
-                                <ul class="list-group">
-                                    <li draggable *ngFor="let item of items" [dragData]="item" class="list-group-item">{{item.name}}</li>
-                                </ul>
-                            </div>
                             
-                            <div class="col-md-6">
-                                <div class="panel panel-default" droppable (onDrop)="onItemDrop($event)">
-                                    <div class="panel-heading">Drop Items here</div>
-                                        <div class="panel-body">
-                                        <li *ngFor="let item of droppedItems" class="list-group-item">{{item.name}}</li>
-                                        </div>
-                                </div>
-                            </div> -->
-
-                            
-                        <div class="col-md-6">
+                        <div class="col-md-9">
                             <h3 class="text-dark mb-1">Liste voiture à répare</h3>
                             <div class="card shadow">
                                 <div class="card-body">
@@ -34,16 +17,16 @@
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">Voiture</th>
-                                                    <th colspan="2" class="text-center">Action</th>
+                                                    <th colspan="3" class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="dataResultUser.length > 0 && !loaderView">     
                                                 <tr *ngFor="let d of dataResultUser; let i = index">
                                                     <td *ngFor="let v of d.voiture; let j = index">
-                                                        <ul *ngIf="v.estDansLeGarage == true">
+                                                        <ul *ngIf="v.estDansLeGarage == true && v.estTerminer == false" draggable [dragData]="v" class="list-group-item" (mousedown)="mousedown(d)" (mouseup)="mouseup()" (mouseleave)="mouseup()">
                                                             <li>{{v.marque}} {{v.modele}}</li>
-                                                            <ul *ngFor="let m of v.materiel; let k = index">
-                                                                <li>{{m.designationMateriel}}
+                                                            <ul>
+                                                                <li *ngFor="let m of v.materiel; let k = index">{{m.designationMateriel}}
                                                                     <button class="btn btn-warning btn-block btn-sm" *ngIf="m.estReparer == false" (click)="reparer(d, v._id, m._id)">Réparé</button>
                                                                     <button class="btn btn-success btn-block btn-sm" disabled="true" *ngIf="m.estReparer == true">Réparé</button>
                                                                 </li>                                                                
@@ -59,24 +42,23 @@
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <h3 class="text-dark mb-1">Liste voiture terminée</h3>
                             <div class="card shadow">
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">#</th>
-                                                    <th class="text-center">Voiture</th>
-                                                    <th class="text-center">Liste à réparé</th>
-                                                    <th colspan="2" class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>     
-                                                
-                                            </tbody>
-                                        </table>
+                                    <div class="panel panel-default" droppable (onDrop)="onItemDrop($event)">
+                                        <div class="panel-heading">Liste voiture terminée</div>   
+                                        <div class="panel-body"  *ngFor="let item of dataResultVoitureTerminer">
+                                            <ul *ngFor="let v of item.voiture">
+                                                <li class="list-group-item" *ngIf="v.estTerminer == true">{{v.immatriculation}}: {{v.marque}} {{v.modele}} 
+                                                    <button class="btn btn-primary btn-block btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#modalEmail"> Envoyer email
+                                                </button>
+                                                </li>
+                                            </ul>
+                                            
+                                         </div>
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +66,56 @@
 
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal email-->
+<div class="modal fade" id="modalEmail" tabindex="-1" role="dialog" aria-labelledby="modalEmailLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <button type="button" id="updateCloseModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center mb-4">
+                    <h2>Envoyer email</h2>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    <form [formGroup]="emailForm" (ngSubmit)="envoyerEmail()">
+                        <div class="form-group">
+                            <input
+                                [ngClass]="{'is-valid': c.emailAddress.valid, 'is-invalid': c.emailAddress.invalid && (c.emailAddress.dirty || c.emailAddress.touched)}"
+                                type="text" formControlName="emailAddress" class="form-control" placeholder="email">
+                            <div class="invalid-feedback">
+                                Veuillez remplir le titre.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="3"
+                                [ngClass]="{'is-valid': c.emailBody.valid, 'is-invalid': c.emailBody.invalid && (c.emailBody.dirty || c.emailBody.touched)}"
+                                type="text" formControlName="emailBody" class="form-control" placeholder="email Body">
+                            </textarea>
+                            <div class="invalid-feedback">
+                                Veuillez remplir le contenue.
+                            </div>
+                        </div>
+            
+                        <div class="d-grid gap-2">
+                            <button [disabled]="!emailForm.valid || loader" type="submit" class="btn btn-primary">
+                                <i *ngIf="loader" style="margin-left: -12px; margin-right: 8px;"
+                                    class="fa fa-circle-o-notch fa-spin"></i>
+                                <ng-container *ngIf="!loader"> Envoyer email</ng-container>
+                                <ng-container *ngIf="loader"> Envoye en cours</ng-container>
+
+                            </button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>

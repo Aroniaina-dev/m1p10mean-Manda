@@ -57,23 +57,4 @@ export class LoginComponent implements OnInit {
   signUp() {
     this.router.navigate(['/login/signUp']);
   }
-
-  // login(): void {
-  //   if (this.formGroup.valid) {
-  //     this.load = true;
-  //     var email = this.formGroup.get('email')?.value;
-  //     var mdp = this.formGroup.get('password')?.value;
-  //     if (email == "bdbgperformance@gmail.com") {
-  //       if (mdp == "Richamed91:") {
-  //         this.router.navigate(['/atelier']);
-  //       }
-  //     } else {
-  //       this.toastr.error("Erreur d'authentification");
-  //     }
-  //   } else {
-  //     this.toastr.warning("Un des format de vos champs est incorrect");
-  //   }
-  // }
-
-
 }

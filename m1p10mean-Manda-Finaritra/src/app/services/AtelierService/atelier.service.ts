@@ -56,4 +56,17 @@ export class AtelierService {
   changeStatesReparer(user: User, idVoiture: string, idMateriel: string): Observable<HttpResponseModel<User>> {
     return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture/"+idVoiture+"/"+idMateriel, user);
   }
+
+  changeStatesTerminer(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture_reparer/"+idVoiture, user);
+  }
+
+  sendEmail(email: string, body: string): Observable<HttpResponseModel<any>> {
+    return this.httpClient.post<HttpResponseModel<any>>(environment.end_point+"user/sendEmail",{
+      email: email,
+      body: body
+    });
+  }
+
+
 }

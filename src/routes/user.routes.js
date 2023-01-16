@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const userDb = require('../db/user.db');
 const User = require('../models/user');
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const multer = require('multer')
-const uuid = require('uuid')
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const multer = require('multer');
+const uuid = require('uuid');
+const nodemailer = require("nodemailer");
 
 router.get('/generate', async (req, res) => {
     try {
@@ -38,19 +39,25 @@ router.get('/atelier/:loginType', async (req, res) => {
     try {
         
         const filter = {}
-        if (req.params.loginType) filter.loginType = req.params.loginType
+        if (req.params.loginType){
+            filter.loginType = req.params.loginType;
+        } 
         else {
             res.status(400).json({ msg: 'ID required' })
             return
         }
-        const result = await User.find(filter)
-        // console.log("Get all client type: ", result);
-        res.json(result)
+        const result = await User.find({
+            "loginType" : req.params.loginType,
+            // "voiture.estDansLeGarage" : false
+        });
+        console.log("Get all client type: ", result);
+        res.json(result);
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
     }
 })
+
 
 router.get('/', async (req, res) => {
     try {
@@ -159,8 +166,6 @@ router.put('/voiture/:id', async (req, res) => {
     try {
         var voiture_id = req.params.id;
         const data = req.body
-        // console.log("Update voiture: ", data);
-        // console.log("IdVoiture: ", voiture_id);
         User.update({ 'voiture._id': voiture_id },
             {
                 '$set': {
@@ -186,9 +191,6 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
         var voiture_id = req.params.id;
         var materiel_id = req.params.idMateriel;
         const data = req.body
-        // console.log("Update voiture: ", data);
-        // console.log("IdVoiture: ", voiture_id);
-        // console.log("idMateriel: ", materiel_id);
         User.update(
             {
                 "user._id": data._id,
@@ -218,5 +220,68 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
     }
 })
 
+router.put('/voiture_reparer/:id', async (req, res) => {
+    try {
+        var voiture_id = req.params.id;
+        const data = req.body
+        User.update({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.estTerminer': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                return res.json(model);
+            });
 
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+
+
+
+router.post('/sendEmail', async (req, res) => {
+    try {
+        console.log("request came");
+        let data = req.body;
+        console.log(data.email);
+        console.log(data.body);
+
+        var nodemailer = require('nodemailer');
+
+        var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'nomenjanaharymanda9@gmail.com',
+            pass: 'Aroniaina2001!!'
+        }
+        });
+
+        var mailOptions = {
+        from: 'nomenjanaharymandaaroniaina@gmail.com',
+        to: 'nomenjanaharymanda9@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ');
+            }
+          }); 
+       
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
 module.exports = router;
