@@ -2,6 +2,8 @@ import {InfoMateriel} from "./infoMateriel";
 
 export class Materiel {
     _id!: string;
-    designationGlobal!: string;
-    materiel!: InfoMateriel[];
+    designationMateriel!: string;
+    prixReparation!: Number;
+    dateFinReparation!: Date;
+    estReparer!: boolean;
 }

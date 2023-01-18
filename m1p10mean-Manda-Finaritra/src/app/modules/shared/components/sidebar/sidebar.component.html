@@ -2,20 +2,35 @@
   [ngClass]="{'toggled': minify}">
   <div class="container-fluid d-flex flex-column p-0">
     <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
-      [routerLink]="['/admin/droit']">
+      *ngIf="user.loginType ==1" [routerLink]="['/atelier']">
       <div class="sidebar-brand-icon rotate-n-15"></div>
-      <div class="sidebar-brand-text mx-3"><span>m1p10mean-Manda-Finaritra&nbsp;</span></div>
+      <div class="sidebar-brand-text mx-3"><span>m1p10mean&nbsp;</span></div>
+    </a>
+    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+      *ngIf="user.loginType ==2" [routerLink]="['/financier']">
+      <div class="sidebar-brand-icon rotate-n-15"></div>
+      <div class="sidebar-brand-text mx-3"><span>m1p10mean&nbsp;</span></div>
     </a>
     <hr class="sidebar-divider my-0">
     <ul class="nav navbar-nav text-light" id="accordionSidebar">
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" *ngIf="user.loginType ==1">
         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-          <img src="/assets/img/livre-de-droit.png" alt="image" style="width: 10%; height: auto;"><span>Droit</span></a>
+          <span>Atelier & Voiture</span></a>
         <div class="dropdown-menu" role="menu">
-          <a class="dropdown-item" role="presentation" [routerLink]="['/admin/droit']" [routerLinkActive]="'active'"
-            [routerLinkActiveOptions]="{exact: true}">Liste voiture</a>
-          <a class=" dropdown-item" role="presentation" [routerLink]="['/']"
-            [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Nouvelle voiture</a>
+          <a class="dropdown-item" role="presentation" [routerLink]="['/atelier']" [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{exact: true}">Liste dans l'atelier</a>
+          <a class=" dropdown-item" role="presentation" [routerLink]="['/atelier/liste_voiture']"
+            [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Liste voiture garager</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown" *ngIf="user.loginType ==2">
+        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+          <span>Liste paiment & stat</span></a>
+        <div class="dropdown-menu" role="menu">
+          <a class="dropdown-item" role="presentation" [routerLink]="['/financier']" [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{exact: true}">Liste paiement</a>
+          <a class=" dropdown-item" role="presentation" [routerLink]="['/financier/stat']"
+            [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">stat</a>
         </div>
       </li>
     </ul>

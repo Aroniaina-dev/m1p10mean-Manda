@@ -6,6 +6,8 @@ export class Voiture {
     marque!: string;
     modele!: string;
     materiel!: Materiel[];
+    estDansLeGarage!: boolean;
     dateEntrerGarage!: Date;
     dateSortieGarage!: Date;
+    estTerminer!: boolean;
 }

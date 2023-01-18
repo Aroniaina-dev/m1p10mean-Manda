@@ -19,10 +19,11 @@
           </div>
       </div>
       <div class="form-group">
-          <button *ngIf="!loader" [disabled]="loader || !formGroup.valid" class="btn btn-primary btn-block"
-              type="submit">Se Connecter</button>
-          <button *ngIf="loader" class="btn btn-primary btn-block" type="button" disabled><i
-                  class="fa fa-spinner fa-spin"></i> Connexion en cours...</button>
-      </div>
+        <button *ngIf="!loader" [disabled]="loader || !formGroup.valid" class="btn btn-primary btn-block"
+        type="submit">Se Connecter</button>
+    <button *ngIf="loader" class="btn btn-primary btn-block" type="button" disabled><i
+            class="fa fa-spinner fa-spin"></i> Connexion en cours...</button>
+    <button *ngIf="!loader" [disabled]="loader" class="btn btn-success btn-block" type="button"
+        (click)="signUp()">S'inscrire</button>      </div>
   </form>
 </div>

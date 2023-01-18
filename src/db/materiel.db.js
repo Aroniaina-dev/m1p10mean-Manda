@@ -3,8 +3,7 @@ module.exports = materiels = [
         "designationGlobal": 'Frein',
         materiel: [
             {
-                "designation": 'Plaque avant',
-                "avancement": 0,
+                "designationMateriel": 'Plaque avant',
                 "prixReparation": 10000
             },
         ]
@@ -13,13 +12,11 @@ module.exports = materiels = [
         "designationGlobal": 'Pneu',
         materiel: [
             {
-                "designation": 'Valve',
-                "avancement": 0,
+                "designationMateriel": 'Valve',
                 "prixReparation": 1000
             },
             {
-                "designation": 'Chambre à air',
-                "avancement": 0,
+                "designationMateriel": 'Chambre à air',
                 "prixReparation": 1000
             },
         ]

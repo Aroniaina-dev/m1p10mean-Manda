@@ -13,13 +13,16 @@ const schema = new Schema({
         marque: { type: String, required: true, },
         modele: { type: String },
         materiel: [{
-        designationMateriel: {type: String, required: true},
-        prixReparation: { type: Number, required: true},
-        dateFinReparation: {type: Date}
+            designationMateriel: {type: String, required: true},
+            prixReparation: { type: Number, required: true},
+            dateFinReparation: {type: Date},
+            estReparer: {type: Boolean}
         }],
+        estDansLeGarage: {type: Boolean},
         dateEntrerGarage: { type: Date},
-        dateSortieGarage: { type: Date}
+        dateSortieGarage: { type: Date},
+        estTerminer: {type:Boolean}
     }],
 }, { timestamps: true });
 
-module.exports = User = mongoose.model('User', schema)
+module.exports = User = mongoose.model('Users', schema)
