@@ -11,13 +11,163 @@
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                                        
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">#</th>
+                                                    <th>Propriétaire</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="dataResultUser.length > 0 && !loaderView">
+                                                <tr *ngFor="let d of dataResultUser; let i = index">
+                                                    <td class="text-center">{{i + 1}}</td>
+                                                    <td>{{d.nom}}</td>
+                                                    <td *ngFor="let v of d.voiture; let j = index">
+                                                        <div>
+                                                            <div class="card shadow" style="width: 18rem;">
+                                                                <div class="card-header">
+                                                                    {{j+1}} - {{v.marque}} {{v.modele}}
+                                                                  </div>
+                                                                <div class="card-body">
+                                                                    <ul>
+                                                                        <li *ngFor="let m of v.materiel; let k = index">. {{m.designationMateriel}} - {{m.prixReparation}} Ar</li>                                                                
+                                                                        <li>TOTAL: {{getTotal(v.materiel)}}</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <button class="btn btn-success btn-block btn-sm"
+                                                                        data-toggle="modal"
+                                                                        data-target="#modalPayement" (click)="initForm(d); voitureInitForm(v)">
+                                                                        Valider
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                    </div>               
+                                                    </td>                                                                    
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="dataResultUser.length == 0 && !loaderView">
+                                                <tr>
+                                                    <td colspan="4" class="text-center">Aucune voiture dans l'atelier</td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="loaderView">
+                                                <tr>
+                                                    <td colspan="4" class="text-center"><i
+                                                            class="fa fa-spinner fa-spin"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table> 
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                
+                            </div>                        
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal bon de payer-->
+<div class="modal fade bd-example-modal-lg" id="modalPayement" tabindex="-1" role="dialog" aria-labelledby="modalBonDeSortieLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="contenue">
+            <div class="modal-header border-bottom-0">
+                <button type="button" id="updateCloseModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center mb-4">
+                    <h2>Facture</h2>
+                </div>
+                <hr>
+
+                <div class="col">
+                    <p>M1 P10 Mean <br>
+                    Antananarivo<br>
+                    MADAGASCAR<br>
+                    +261 33 85 270 76<br></p>
+                </div>
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-around">
+                        <div class="col-md-6">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <table style="border: none;">
+                                        <thead>
+                                            <th>
+                                                <tr></tr>
+                                                <tr></tr>
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Facture N:</td>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date:</td>
+                                                <td>2023/01/01</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lieu:</td>
+                                                <td>Antananarivo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Contact client:</td>
+                                                <td>{{this.userForm.value.phone}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h5>Destinataire</h5>
+                                    <p>{{this.userForm.value.nom}} {{this.userForm.value.prenom}}<br>
+                                        {{this.userForm.value.email}}<br>
+                                        {{this.userForm.value.phone}}<br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <h4>Informations:</h4>
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Materiel</th>
+                                    <th scope="col">Prix réparation</th>
+                                  </tr>
+                                </thead>
+                                <tbody *ngFor="let m of this.voitureForm.value.materiel; let i = index">
+                                  <tr>
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{m.designationMateriel}}</td>
+                                    <td>{{m.prixReparation}} Ar</td>
+                                  </tr>                               
+                                </tbody>
+                              </table>
+                        </div>    
+                        <p>Total:{{prixFinalTemp}} Ar</p>
+                    </div>                            
+                </div>
+                        
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="button" (click)="validerPayement(this.userForm.value,this.voitureForm.value._id)">Valider</button>
             </div>
         </div>
     </div>

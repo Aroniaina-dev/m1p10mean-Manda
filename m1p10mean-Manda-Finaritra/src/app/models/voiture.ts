@@ -10,4 +10,7 @@ export class Voiture {
     dateEntrerGarage!: Date;
     dateSortieGarage!: Date;
     estTerminer!: boolean;
+    bonDeSortie!: boolean;
+    payer!: boolean;
+    estPayer!: boolean
 }

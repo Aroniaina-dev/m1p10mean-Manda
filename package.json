@@ -1,12 +1,12 @@
 {
   "name": "avocat_depoch_back",
-  "main": "./src/app.js",
+  "main": "./app.js",
   "version": "0.0.1",
   "author": "Aroniaina <mandaaroniaina2001@gmail.com> (https://github.com/Aroniaina-dev)",
   "repository": "https://github.com/Aroniaina-dev/m1p10mean-Manda.git",
   "scripts": {
     "dev": "nodemon",
-    "start": "node src/app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -14,7 +14,7 @@
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.2",
     "email-templates": "^10.0.1",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mailtrap": "^3.0.1",
     "mongoose": "^6.6.1",

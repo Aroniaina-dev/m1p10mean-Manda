@@ -1,45 +1,75 @@
-
 module.exports = users = [
     {
-        "nom": 'Client 1',
-        "prenom": 'Valeur 1',
-        "email": "client1@gmail.com",
-        "password": "client1",
+        "nom": 'Laporte',
+        "prenom": 'Charlie',
+        "email": "client3@gmail.com",
+        "password": "client3",
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [
             {
                 "immatriculation": '1578WWT',
                 "marque": "Nissan",
-                "modele": "Nissan",
+                "modele": "GPT",
                 "materiel": [
                     {
                         "designationMateriel": "Vitre avant",
                         "prixReparation": 30000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-09-28',
+                        "dateFinReparation": '2022-09-28',
                         estReparer: false, 
                     },
                     {
                         "designationMateriel": "Moteur",
                         "prixReparation": 60000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-09-28',
+                        "dateFinReparation": '2022-09-28',
                         estReparer: false, 
                     },
                 ],
                 estDansLeGarage: false,
                 "dateEntrerGarage": new Date(),
                 "dateSortieGarage": new Date(),
-                estTerminer: false
+                estTerminer: false,
+                bonDeSortie: false,
+                estPayer: false,
+                payer: false
+            },
+            {
+                "immatriculation": '1545TBS',
+                "marque": "Toyota",
+                "modele": "V8",
+                "materiel": [
+                    {
+                        "designationMateriel": "Pont",
+                        "prixReparation": 30000,
+                        "dateDebutReparation": '2022-09-28',
+                        "dateFinReparation": '2022-09-30',
+                        estReparer: false, 
+                    },
+                    {
+                        "designationMateriel": "Filtre à air",
+                        "prixReparation": 60000,
+                        "dateDebutReparation": '2022-05-28',
+                        "dateFinReparation": '2022-06-28',
+                        estReparer: false, 
+                    },
+                ],
+                estDansLeGarage: false,
+                "dateEntrerGarage": new Date(),
+                "dateSortieGarage": new Date(),
+                estTerminer: false,
+                bonDeSortie: false,
+                estPayer: false,
+                payer: false
             },
         ]
     },
     {
-        "nom": 'Client 2',
-        "prenom": 'Valeur 2',
-        "email": "client2@gmail.com",
-        "password": "client2",
+        "nom": 'Adams',
+        "prenom": 'Nathan',
+        "email": "client4@gmail.com",
+        "password": "client4",
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [
@@ -51,15 +81,15 @@ module.exports = users = [
                     {
                         "designationMateriel": "Valve pneu",
                         "prixReparation": 10000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-10-1',
+                        "dateFinReparation": '2022-11-28',
                         estReparer: false, 
                     },
                     {
                         "designationMateriel": "Vitre avant",
                         "prixReparation": 30000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-10-28',
+                        "dateFinReparation": '2022-10-29',
                         estReparer: false, 
                     },
                     {
@@ -73,7 +103,11 @@ module.exports = users = [
                 estDansLeGarage: false,
                 "dateEntrerGarage": new Date(),
                 "dateSortieGarage": new Date(),
-                estTerminer: false
+                estTerminer: false,
+                estTerminer: false,
+                bonDeSortie: false,
+                estPayer: false,
+                payer: false
             },
             {
                 "immatriculation": '1011WWT',
@@ -83,8 +117,8 @@ module.exports = users = [
                     {
                         "designationMateriel": "Culasse",
                         "prixReparation": 10000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-04-11',
+                        "dateFinReparation": '2022-04-20',
                         estReparer: false, 
                     },
                     {
@@ -93,6 +127,10 @@ module.exports = users = [
                         "dateDebutReparation": new Date(),
                         "dateFinReparation": new Date(),
                         estReparer: false, 
+                        estTerminer: false,
+                        bonDeSortie: false,
+                        estPayer: false,
+                        payer: false
                     },
                 ],
                 estDansLeGarage: false,
@@ -108,8 +146,8 @@ module.exports = users = [
                     {
                         "designationMateriel": "Porte",
                         "prixReparation": 50000,
-                        "dateDebutReparation": new Date(),
-                        "dateFinReparation": new Date(),
+                        "dateDebutReparation": '2022-11-11',
+                        "dateFinReparation": '2022-11-16',
                         estReparer: false, 
                     },
                     {
@@ -123,7 +161,11 @@ module.exports = users = [
                 estDansLeGarage: false,
                 "dateEntrerGarage": new Date(),
                 "dateSortieGarage": new Date(),
-                estTerminer: false
+                estTerminer: false,
+                estTerminer: false,
+                bonDeSortie: false,
+                estPayer: false,
+                payer: false
             },
         ]
     },

@@ -19,6 +19,10 @@ export class AtelierService {
     return this.httpClient.get<User[]>(environment.end_point+"user/atelier/"+loginType);
   }
 
+  getAllFinancier(loginType: Number): Observable<User[]> {
+    return this.httpClient.get<User[]>(environment.end_point+"user/financier/"+loginType);
+  }
+
 
   /**
    * Appel de l'api qui permet de sauvegarder un User
@@ -61,12 +65,20 @@ export class AtelierService {
     return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture_reparer/"+idVoiture, user);
   }
 
-  sendEmail(email: string, body: string): Observable<HttpResponseModel<any>> {
+  sendEmail(email: string, objet: string,body: string): Observable<HttpResponseModel<any>> {
     return this.httpClient.post<HttpResponseModel<any>>(environment.end_point+"user/sendEmail",{
       email: email,
+      objet: objet,
       body: body
     });
   }
 
+  changeStatesBonDeSortie(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/bondesortie/"+idVoiture, user);
+  }
+
+  changeStatesPayement(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/payement/"+idVoiture, user);
+  }
 
 }

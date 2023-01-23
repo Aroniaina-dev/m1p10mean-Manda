@@ -43,7 +43,13 @@ export class LoginComponent implements OnInit {
         this.loader = false;
         if (res) {
           this.authentificationService.storeUserData(res.token, res.user);
-          this.router.navigate(['/atelier']);
+          console.log(res.user.loginType);
+          if (res.user.loginType ==1) {
+            this.router.navigate(['/atelier']);
+          }
+          else if(res.user.loginType ==2){
+            this.router.navigate(['/financier']);
+          }
         }
       }, error => {
         this.loader = false;
