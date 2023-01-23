@@ -3,7 +3,6 @@ const userDb = require('../db/user.db');
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const uuid = require('uuid');
 
 router.get('/generate', async (req, res) => {
     try {

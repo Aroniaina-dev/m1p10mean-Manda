@@ -15,6 +15,7 @@ const schema = new Schema({
         materiel: [{
             designationMateriel: {type: String, required: true},
             prixReparation: { type: Number, required: true},
+            dateDebutReparation: {type: Date},
             dateFinReparation: {type: Date},
             estReparer: {type: Boolean}
         }],
@@ -22,6 +23,7 @@ const schema = new Schema({
         dateEntrerGarage: { type: Date},
         dateSortieGarage: { type: Date},
         estTerminer: {type:Boolean},
+        bonDeSortie: {type: Boolean},
         payer: {type: Boolean},
         estPayer: {type: Boolean}
     }],
