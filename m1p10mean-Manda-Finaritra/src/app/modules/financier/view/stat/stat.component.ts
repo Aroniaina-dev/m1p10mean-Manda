@@ -31,15 +31,12 @@ export class StatComponent implements OnInit {
 	tempsMoyenne: number = 0;
 	temporaireTableu: number[] = [];
 	listeFinal = [{}];
-	listeTemp1 = [1,2,3,4,5,6,7,8,9];
-	listeTemp2 = [10,20,30,40,50,60,70,80,90];	
+	listeTemp1 = [new Date(2022, 0, 1) ,new Date(2022, 1, 1),new Date(2022, 2, 2),new Date(2022, 3, 1),new Date(2022, 4, 1),new Date(2022, 5, 1),new Date(2022, 6, 1),new Date(2022, 7, 1),new Date(2022, 8, 1),new Date(2022, 9, 1)];
+	listeTemp2 = [10,20,30,40,50,60,70,80,90,100];	
 	chartChiffreAffaire!: Chart;
 	ctxChiffreAffaire!: HTMLCanvasElement;
 
-  constructor(private router: Router,
-    private toastr: ToastrService,
-    private fB: FormBuilder,
-    private formBuildreVoiture: FormBuilder,
+  constructor(
     private atelierService: AtelierService,
     ) { 
     }
@@ -120,7 +117,7 @@ export class StatComponent implements OnInit {
 
 	chartOptionsPie = {
 		title: {
-			text: "Bénéfice par mois en entrant les dépenses"
+			text: "Bénéfice par mois"
 		},
 		theme: "light2",
 		animationEnabled: true,
@@ -131,7 +128,7 @@ export class StatComponent implements OnInit {
 		},
 		data: [{
 		  type: "area", //change type to bar, line, area, pie, etc
-		  yValueFormatString: "janvier ##0kAr",
+		  yValueFormatString: "##0kAr",
 		  color: "#01b8aa",
 		  dataPoints: 
 			this.listeFinal
@@ -217,13 +214,14 @@ export class StatComponent implements OnInit {
 			indexLabelPlacement: "inside",
 			indexLabelFontColor: "white",
 			dataPoints: [
-				{ y: 551160, name: "New Visitors", color: "#058dc7", indexLabel: "62.56%" },
-				{ y: 329840, name: "Returning Visitors", color: "#50b432", indexLabel: "37.44%" }
+				{ y: 551160, name: "Janvier", color: "#058dc7", indexLabel: "30%" },
+				{ y: 329840, name: "Returning Visitors", color: "#50b432", indexLabel: "30%" },
+				{ y: 329840, name: "Returning Visitors", color: "#752b15", indexLabel: "40%" }
 			]
 		}],
-		"New Visitors": [{
+		"Janvier": [{
 			color: "#058dc7",
-			name: "New Visitors",
+			name: "Janvier",
 			type: "column",
 			dataPoints: [
 				{ label: "Jan", y: 42600 },
