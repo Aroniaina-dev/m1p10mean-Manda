@@ -17,14 +17,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     ],\
     "dependencyTreeRoots": [\
       {\
-        "name": "avocat_depoch_back",\
+        "name": "m1p10mean-manda-finaritra",\
         "reference": "workspace:."\
       }\
     ],\
     "enableTopLevelFallback": true,\
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
-      ["avocat_depoch_back", ["workspace:."]]\
+      ["m1p10mean-manda-finaritra", ["workspace:."]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -254,11 +254,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["avocat_depoch_back", [\
+      ["m1p10mean-manda-finaritra", [\
         ["workspace:.", {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["avocat_depoch_back", "workspace:."],\
+            ["m1p10mean-manda-finaritra", "workspace:."],\
             ["bcrypt", "npm:5.1.0"],\
             ["body-parser", "npm:1.20.0"],\
             ["dotenv", "npm:16.0.2"],\
