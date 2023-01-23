@@ -1,13 +1,13 @@
 const express = require('express')
-const routes = require('./routes');
+const routes = require('./src/routes');
 require('dotenv').config()
-require('./config/database')
+require('./src/config/database')
 const app = express();
 
 //importation des routes
-const materielRoute = require('../src/routes/materiel.routes');
-const userRoute = require('../src/routes/user.routes');
-const voitureRoute = require('../src/routes/voiture.routes');
+const materielRoute = require('./src/routes/materiel.routes');
+const userRoute = require('./src/routes/user.routes');
+const voitureRoute = require('./src/routes/voiture.routes');
 
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())

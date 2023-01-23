@@ -1,10 +1,10 @@
-
+const bcrypt = require("bcrypt");
 module.exports = users = [
     {
         "nom": 'Client 1',
         "prenom": 'Valeur 1',
         "email": "client1@gmail.com",
-        "password": "client1",
+        "password": bcrypt.hash("client1", 10),
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [
@@ -39,7 +39,7 @@ module.exports = users = [
         "nom": 'Client 2',
         "prenom": 'Valeur 2',
         "email": "client2@gmail.com",
-        "password": "client2",
+        "password": bcrypt.hash("client2", 10),
         "phone": "0349496013",
         "loginType": 0, 
         voiture: [

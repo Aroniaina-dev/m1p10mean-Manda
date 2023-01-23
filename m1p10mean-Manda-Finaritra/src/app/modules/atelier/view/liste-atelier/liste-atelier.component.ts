@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AtelierService } from 'src/app/services/AtelierService/atelier.service';
 import { User } from 'src/app/models/user';
 import { Materiel } from 'src/app/models/materiel';
+import { Voiture } from 'src/app/models/voiture';
 
 @Component({
   selector: 'app-liste-atelier',
@@ -18,6 +19,7 @@ export class ListeAtelierComponent implements OnInit {
   load: boolean = false;
   dataResultUser: User[] = [];
   dataResulMateriel: Materiel[] = [];
+  ListeVoiture: User[] = [];
   userForm!: FormGroup;
 
 
@@ -37,12 +39,28 @@ export class ListeAtelierComponent implements OnInit {
       this.load = true;
       this.atelierService.getAll(0).subscribe((res) => {
         this.dataResultUser = res;
-        console.log(this.dataResultUser);
+        for (let i = 0; i < this.dataResultUser.length; i++) {
+          for (let j = 0; j < this.dataResultUser[i].voiture.length; j++) {
+            if(this.dataResultUser[i].voiture[j].estDansLeGarage == true){
+              this.dataResultUser[i].voiture.splice(j, 1);
+              // console.log(i,"-",j);
+              console.log(this.dataResultUser[i].voiture);
+            }
+          }
+        }
         this.load = false;
       });
     } catch (error) {
       alert(error);
     }
+  }
+  
+  getTotal(prix: Materiel[]){
+    let total = 0;
+    for (let index = 0; index < prix.length; index++) {
+      total = total + prix[index].prixReparation;
+    }
+    return total;
   }
 
   initForm(user: User): void {

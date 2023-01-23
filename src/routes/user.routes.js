@@ -3,9 +3,7 @@ const userDb = require('../db/user.db');
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const multer = require('multer');
 const uuid = require('uuid');
-const nodemailer = require("nodemailer");
 
 router.get('/generate', async (req, res) => {
     try {
@@ -48,7 +46,29 @@ router.get('/atelier/:loginType', async (req, res) => {
         }
         const result = await User.find({
             "loginType" : req.params.loginType,
-            // "voiture.estDansLeGarage" : false
+            "voiture.estDansLeGarage" : false
+        });
+        // console.log("Get all client type: ", result);
+        res.json(result);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.get('/financier/:loginType', async (req, res) => {
+    try {
+        
+        const filter = {}
+        if (req.params.loginType){
+            filter.loginType = req.params.loginType;
+        } 
+        else {
+            res.status(400).json({ msg: 'ID required' })
+            return
+        }
+        const result = await User.find({
+            "loginType" : req.params.loginType
         });
         console.log("Get all client type: ", result);
         res.json(result);
@@ -111,7 +131,6 @@ router.post('/signup', async (req, res) => {
         }
         const dateLimit = new Date();
         dateLimit.setDate(dateLimit.getDate() + 1);
-        user.activated = false
         user.activationLimit = dateLimit
         user.password = await bcrypt.hash(user.password, 10)
         user.activationCode = Math.floor(100000 + Math.random() * 900000)
@@ -212,6 +231,7 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
                 res.send({'error':'An error has occurred'});
             } else {
                 console.log(result)
+                return res.json(result);
             }
         })
     } catch (error) {
@@ -220,31 +240,55 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
     }
 })
 
+router.put('/bondesortie/:id', async (req, res) => {
+        try {
+            console.log("Facture");
+            var voiture_id = req.params.id;
+            const data = req.body
+            console.log(voiture_id);
+            User.updateOne({ 'voiture._id': voiture_id },
+                {
+                    '$set': {
+                        'voiture.$.bonDeSortie': true,
+                    }
+                },
+                function (err, model) {
+                    if (err) {
+                        console.log(err);
+                        return res.send(err);
+                    }
+                    console.log(model);
+                    return res.json(model);
+                });
+    
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ msg: error })
+        }
+})
+
 router.put('/voiture_reparer/:id', async (req, res) => {
     try {
         var voiture_id = req.params.id;
         const data = req.body
         User.update({ 'voiture._id': voiture_id },
-            {
-                '$set': {
-                    'voiture.$.estTerminer': true,
-                }
-            },
-            function (err, model) {
-                if (err) {
-                    console.log(err);
-                    return res.send(err);
-                }
-                return res.json(model);
-            });
-
+        {
+            '$set': {
+                'voiture.$.estTerminer': true,
+            }
+        },
+        function (err, model) {
+            if (err) {
+                console.log(err);
+                return res.send(err);
+            }
+            return res.json(model);
+        });
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
     }
 })
-
-
 
 
 router.post('/sendEmail', async (req, res) => {
@@ -253,32 +297,67 @@ router.post('/sendEmail', async (req, res) => {
         let data = req.body;
         console.log(data.email);
         console.log(data.body);
+        console.log(data.objet);
+        const nodemailer = require('nodemailer');
 
-        var nodemailer = require('nodemailer');
-
-        var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'nomenjanaharymanda9@gmail.com',
-            pass: 'Aroniaina2001!!'
-        }
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            service:'gmail',
+            secure: false,
+            auth: {
+               user: 'nomenjanaharymandaaroniaina@gmail.com',
+               pass: 'fukdxneowpfmkjzs'
+            },
+            debug: false,
+            logger: true
         });
 
-        var mailOptions = {
-        from: 'nomenjanaharymandaaroniaina@gmail.com',
-        to: 'nomenjanaharymanda9@gmail.com',
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
+        let mailOptions = {
+            from: 'nomenjanaharymandaaroniaina@gmail.com',
+            to: 'nomenjanaharymanda9@gmail.com',
+            subject: data.objet,
+            text: data.body
         };
 
-        transporter.sendMail(mailOptions, function(error, info){
+        transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-              console.log(error);
+                console.log(error);
+                return res.send(error);
             } else {
-              console.log('Email sent: ');
+                console.log('Email sent: ' + info.response);
+                return res.json(info.response);
             }
-          }); 
-       
+        });
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+
+router.put('/payement/:id', async (req, res) => {
+    try {
+        console.log("Facture");
+        var voiture_id = req.params.id;
+        const data = req.body
+        console.log(voiture_id);
+        User.updateOne({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.estPayer': true                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log(model);
+                return res.json(model);
+            });
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })

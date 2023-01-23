@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { AtelierService } from 'src/app/services/AtelierService/atelier.service';
 import { User } from 'src/app/models/user';
 import { Voiture } from 'src/app/models/voiture';
-import { HttpHeaders } from '@angular/common/http';
-import { Http, Response } from '@angular/http';
+import { Materiel } from 'src/app/models/materiel';
+
 
 
 @Component({
@@ -24,15 +24,18 @@ export class ListeVoitureComponent implements OnInit {
   dataResultVoitureTerminer: User[] =[];
   userForm!: FormGroup;
   emailForm!: FormGroup;
+  voitureForm!: FormGroup;
   emailAddress:string="mandaaroniaina2001@gmail.com";
   emailBody:string="Manda Aroniaina";
+  prixFinalTemp!: number;
 
 
   constructor(private router: Router,
     private toastr: ToastrService,
     private fB: FormBuilder,
     private formBuildreEmail: FormBuilder,
-    private atelierService: AtelierService
+    private formBuildreVoiture: FormBuilder,
+    private atelierService: AtelierService,
     ) { 
   }
 
@@ -40,7 +43,8 @@ export class ListeVoitureComponent implements OnInit {
     this.initForm(new User());
     this.initData();
     this.initDataVoitureTerminer();
-    this.initFormEmail();
+    this.initFormEmail(new User);
+    this.voitureInitForm(new Voiture);
   }
 
   initData(): void {
@@ -78,13 +82,48 @@ export class ListeVoitureComponent implements OnInit {
       loginType: [user.loginType],
       voiture: [user.voiture],
     });
+    console.log(this.userForm.value.nom);
   }
 
-  initFormEmail():void{
+  voitureInitForm(voiture: Voiture): void {
+    this.voitureForm = this.formBuildreVoiture.group({
+      _id: [voiture._id, [Validators.required]],
+      immatriculation: [voiture.immatriculation, [Validators.required]],
+      marque: [voiture.marque, [Validators.required]],
+      modele: [voiture.modele],
+      materiel: [voiture.materiel],
+      estDansLeGarage: [voiture.estDansLeGarage],
+      dateEntrerGarage: [voiture.dateEntrerGarage],
+      dateSortieGarage: [voiture.dateSortieGarage],
+      estTerminer: [voiture.estTerminer],
+      bonDeSortie: [voiture.bonDeSortie],
+    });    
+    this.prixFinalTemp = this.getTotal(this.voitureForm.value.materiel);
+    console.log(this.prixFinalTemp);
+  }
+
+  modeleEmail!: string;
+  marqueEmail!: string;
+  immatriculationEmail!: string;
+  bodyEmail!: string;
+
+  initFormEmail(user: User):void{
     this.emailForm = this.formBuildreEmail.group({
-      emailAddress: [this.emailAddress, [Validators.compose([Validators.required, Validators.email])]],
-      emailBody: [this.emailBody]
+      _id: [user._id, [Validators.required]],
+      nom: [user.nom, [Validators.required]],
+      prenom: [user.prenom, [Validators.required]],
+      email: [user.email],
+      body: [this.bodyEmail],
+      objet: ["Voiture réparé"]
     });
+    console.log(this.emailForm.value);
+  }
+
+  getVoitureEmail(modele: string, marque:string, immatriculation: string){
+    this.modeleEmail = modele;
+    this.marqueEmail = marque;
+    this.immatriculationEmail = immatriculation;
+    this.bodyEmail = "La voiture "+this.modeleEmail+" "+this.marqueEmail+" "+ this.immatriculationEmail +" est terminée. Veuillez la récupéré";
   }
 
   onItemSelector(value :any) {
@@ -145,22 +184,33 @@ export class ListeVoitureComponent implements OnInit {
     }
   }
 
+  closeModalBonDeSortie() {
+    const btn = document.getElementById('modalBonDeSortie');
+    if (btn) {
+      btn.click();
+    }
+  }
+
+
 
   getUserCheck(id: string) {
     this.router.navigate(['/admin/children/' + id]);
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 
   reparer(user:User, idVoiture: string, idMateriel: string){
     this.loader = true;
     this.atelierService.changeStatesReparer(user, idVoiture, idMateriel).subscribe(res => {
       this.loader = false;
-      if (!res.error) {
+      if (res) {
         this.toastr.success('Le matériel a été réparé');
         this.ngOnInit();
-        // this.initData();
         this.closeModal();
       } else {
-        this.toastr.error(res.message);
+        this.toastr.error(res);
       }
     }, error => {
       this.loader = false;
@@ -170,8 +220,9 @@ export class ListeVoitureComponent implements OnInit {
   envoyerEmail(){
     try {
       this.load = true;
-      this.atelierService.sendEmail(this.emailAddress, this.emailBody).subscribe((res) => {
+      this.atelierService.sendEmail(this.emailAddress, this.emailForm.value.objet,this.emailForm.value.body).subscribe((res) => {
         this.toastr.success('Email bien envoyé');
+        this.closeModal();
         this.load = false;
       });
     } catch (error) {
@@ -182,4 +233,48 @@ export class ListeVoitureComponent implements OnInit {
   get c(): any {
     return this.emailForm.controls;
   }
+
+  get u(): any {
+    return this.userForm.controls;
+  }
+  
+
+  getProgression(materiel: Materiel[]){
+    let evolutionFinal = 0;
+    let evolutionTotal = materiel.length;
+    
+      let evolution = 0;
+    for (let index = 0; index < materiel.length; index++) {
+      if(materiel[index].estReparer == true){
+        evolution += 1;
+      }
+    }
+    evolutionFinal = (evolution * 100) /evolutionTotal;
+    return evolutionFinal.toFixed(2);
+  }
+
+  getTotal(prix: Materiel[]){
+    let total = 0;
+    for (let index = 0; index < prix.length; index++) {
+      total = total + prix[index].prixReparation;
+    }
+    return total;
+  }
+
+  validerBonDeSortie(user:User, idVoiture: string){
+    this.loader = true;
+    this.atelierService.changeStatesBonDeSortie(user,idVoiture).subscribe(res => {
+      this.loader = false;
+      if (res) {
+        this.toastr.success("Bon de sortie accepté");
+        this.ngOnInit();
+        this.closeModalBonDeSortie();
+      } else {
+        this.toastr.error(res);
+      }
+    }, error => {
+      this.loader = false;
+    });
+  }
+
 }

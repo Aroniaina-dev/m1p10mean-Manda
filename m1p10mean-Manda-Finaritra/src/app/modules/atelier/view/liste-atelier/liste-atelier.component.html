@@ -23,26 +23,30 @@
                                                     <td class="text-center">{{i + 1}}</td>
                                                     <td>{{d.nom}}</td>
                                                     <td *ngFor="let v of d.voiture; let j = index">
-                                                        <ul *ngIf="v.estDansLeGarage == false">
-                                                            <li>{{j+1}} - {{v.marque}} {{v.modele}}</li>
-                                                            <ul *ngFor="let m of v.materiel; let k = index">
-                                                                <li>. {{m.designationMateriel}}</li>                                                                
-                                                            </ul>
-                                                            <td class="text-center">
-                                                                <button class="btn btn-info btn-block btn-sm" (click)="addToGarage(d, v._id)">
-                                                                    Ajouter
-                                                                    dans le garage
-                                                                </button>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <button class="btn btn-danger btn-block btn-sm"
-                                                                    (click)="initForm(d)" data-toggle="modal"
-                                                                    data-target="#deleteModal">
-                                                                    Supprimer
-                                                                </button>
-                                                            </td>
-                                                            <br>
-                                                        </ul>                    
+                                                        <div *ngIf="v.estDansLeGarage == false">
+                                                            <div class="card shadow" style="width: 18rem;">
+                                                                <div class="card-header">
+                                                                    {{j+1}} - {{v.marque}} {{v.modele}}
+                                                                  </div>
+                                                                <div class="card-body">
+                                                                    <ul>
+                                                                        <li *ngFor="let m of v.materiel; let k = index">. {{m.designationMateriel}} - {{m.prixReparation}} Ar</li>                                                                
+                                                                        <li>TOTAL: {{getTotal(v.materiel)}}</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <button class="btn btn-info btn-block btn-sm" (click)="addToGarage(d, v._id)">
+                                                                        Ajouter
+                                                                        dans le garage
+                                                                    </button>
+                                                                    <button class="btn btn-danger btn-block btn-sm"
+                                                                        (click)="initForm(d)" data-toggle="modal"
+                                                                        data-target="#deleteModal">
+                                                                        Supprimer
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                    </div>               
                                                     </td>                                                                    
                                                 </tr>
                                             </tbody>

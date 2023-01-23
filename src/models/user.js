@@ -21,7 +21,9 @@ const schema = new Schema({
         estDansLeGarage: {type: Boolean},
         dateEntrerGarage: { type: Date},
         dateSortieGarage: { type: Date},
-        estTerminer: {type:Boolean}
+        estTerminer: {type:Boolean},
+        payer: {type: Boolean},
+        estPayer: {type: Boolean}
     }],
 }, { timestamps: true });
 
