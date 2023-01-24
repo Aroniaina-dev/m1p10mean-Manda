@@ -1,6 +1,6 @@
 {
   "name": "m1p10mean-manda-finaritra",
-  "main": "./app.js",
+  "main": "app.js",
   "version": "0.0.1",
   "author": "Aroniaina <mandaaroniaina2001@gmail.com> (https://github.com/Aroniaina-dev)",
   "repository": "https://github.com/Aroniaina-dev/m1p10mean-Manda.git",
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.2",
     "email-templates": "^10.0.1",
