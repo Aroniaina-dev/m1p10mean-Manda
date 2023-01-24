@@ -28,7 +28,7 @@ router.use('/voitures', voitureRouter)
 // router.get('/', (req, res) => {
 //     res.send({ message: 'Hello Manda Aroniaina NOMENJANHARY' });
 // });
-router.get('/', (req, res) => {
+router.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
