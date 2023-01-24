@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
 
 router.get('/atelier/:loginType', async (req, res) => {
     try {
-        
+        console.log("atelier");
         const filter = {}
         if (req.params.loginType){
             filter.loginType = req.params.loginType;
@@ -57,7 +57,7 @@ router.get('/atelier/:loginType', async (req, res) => {
 
 router.get('/financier/:loginType', async (req, res) => {
     try {
-        
+        console.log("Finance");
         const filter = {}
         if (req.params.loginType){
             filter.loginType = req.params.loginType;
