@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const userRouter = require('./user.routes');
-const materielRouter = require('./materiel.routes');
-const voitureRouter = require('./voiture.routes');
+const userRouter = require('./src/routes/user.routes');
+const materielRouter = require('./src/routes/materiel.routes');
+const voitureRouter = require('./src/routes/voiture.routes');
 const path = require('path');
 const express = require('express');
 
