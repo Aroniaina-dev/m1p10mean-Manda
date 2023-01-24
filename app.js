@@ -20,7 +20,6 @@ const verifyToken = (req, res, next) => {
     return next();
 };
 
-router.use(express.static(path.join(__dirname, "dist")))
 router.use('/users', userRouter)
 router.use('/materiels', materielRouter)
 router.use('/voitures', voitureRouter)
