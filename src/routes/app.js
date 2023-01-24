@@ -2,6 +2,8 @@ const router = require('express').Router();
 const userRouter = require('./user.routes');
 const materielRouter = require('./materiel.routes');
 const voitureRouter = require('./voiture.routes');
+const path = require('path');
+const express = require('express');
 
 const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"] || req.body.token || req.query.token || req.headers["x-access-token"];
@@ -18,12 +20,16 @@ const verifyToken = (req, res, next) => {
     return next();
 };
 
+router.use(express.static(path.join(__dirname, "dist")))
 router.use('/users', userRouter)
 router.use('/materiels', materielRouter)
 router.use('/voitures', voitureRouter)
 
+// router.get('/', (req, res) => {
+//     res.send({ message: 'Hello Manda Aroniaina NOMENJANHARY' });
+// });
 router.get('/', (req, res) => {
-    res.send({ message: 'Hello Manda Aroniaina' });
+    res.send(path.join(__dirname, 'dist/index.html'));
 });
 
 module.exports = router;
