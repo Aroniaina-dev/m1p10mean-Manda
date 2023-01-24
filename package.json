@@ -1,12 +1,12 @@
 {
   "name": "m1p10mean-manda-finaritra",
-  "main": "app.js",
+  "main": "./index.js",
   "version": "0.0.1",
   "author": "Aroniaina <mandaaroniaina2001@gmail.com> (https://github.com/Aroniaina-dev)",
   "repository": "https://github.com/Aroniaina-dev/m1p10mean-Manda.git",
   "scripts": {
     "dev": "nodemon",
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
