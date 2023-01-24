@@ -29,7 +29,7 @@ router.use('/voitures', voitureRouter)
 //     res.send({ message: 'Hello Manda Aroniaina NOMENJANHARY' });
 // });
 router.get('/', (req, res) => {
-    res.send(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 module.exports = router;
