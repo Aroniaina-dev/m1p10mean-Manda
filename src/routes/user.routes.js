@@ -93,6 +93,7 @@ router.get('/', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
+        console.log("Login");
         const filter = {}
         let good = false
         if (req.body.email) filter.email = req.body.email
