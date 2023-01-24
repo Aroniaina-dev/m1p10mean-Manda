@@ -23,7 +23,7 @@ router.use('/materiels', materielRouter)
 router.use('/voitures', voitureRouter)
 
 router.get('/', (req, res) => {
-    res.send({ message: 'Hello world' });
+    res.send({ message: 'Hello Manda Aroniaina' });
 });
 
 module.exports = router;
