@@ -21,13 +21,13 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 3000
 
-app.use('/', routes);
+
 
 //liste des routes pour l'application
 app.use('/api/materiel/', materielRoute);
 app.use('/api/user/', userRoute);
 app.use('/api/voiture/', voitureRoute);
-
+app.use('/', routes);
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
