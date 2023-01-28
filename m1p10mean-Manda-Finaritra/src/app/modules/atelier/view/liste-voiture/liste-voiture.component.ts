@@ -6,6 +6,7 @@ import { AtelierService } from 'src/app/services/AtelierService/atelier.service'
 import { User } from 'src/app/models/user';
 import { Voiture } from 'src/app/models/voiture';
 import { Materiel } from 'src/app/models/materiel';
+import jsPDF from 'jspdf';
 
 
 
@@ -277,4 +278,19 @@ export class ListeVoitureComponent implements OnInit {
     });
   }
 
+ @ViewChild('content') content!: ElementRef;
+ savePdf() {
+  const doc = new jsPDF();
+
+  const pdfTable = this.content.nativeElement;
+
+  doc.html(pdfTable.innerHTML, {
+    callback(rst) {
+      rst.save('one.pdf');
+    },
+    x: 10,
+    y: 10
+  });
+
+}
 }

@@ -69,6 +69,42 @@ router.get('/financier/:loginType', async (req, res) => {
         const result = await User.find({
             "loginType" : req.params.loginType
         });
+        // console.log("Get all client type: ", result);
+        res.json(result);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.get('/chart/:loginType', async (req, res) => {
+    try {
+        console.log("chart");
+        const filter = {}
+        if (req.params.loginType){
+            filter.loginType = req.params.loginType;
+        } 
+        else {
+            res.status(400).json({ msg: 'ID required' })
+            return
+        }
+        const result = await User.aggregate(
+            [
+              {
+                $group: {
+                  _id: { $dateToString: { format: "%Y-%m", date: "$date" } }
+                }
+              }
+            ],
+        
+            function(err, result) {
+              if (err) {
+                res.send(err);
+              } else {
+                res.json(result);
+              }
+            }
+          );
         console.log("Get all client type: ", result);
         res.json(result);
     } catch (error) {

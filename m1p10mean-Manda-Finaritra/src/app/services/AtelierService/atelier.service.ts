@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpResponseModel } from 'src/app/models/http-response-model';
 import { User } from 'src/app/models/user';
+import { VoitureTemp } from 'src/app/models/voitureTemp';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -79,6 +80,10 @@ export class AtelierService {
 
   changeStatesPayement(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
     return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/payement/"+idVoiture, user);
+  }
+
+  getAllVoitureTemp(): Observable<HttpResponseModel<VoitureTemp[]>> {
+    return this.httpClient.get<HttpResponseModel<VoitureTemp[]>>(environment.end_point+"voitureTemp");
   }
 
 }

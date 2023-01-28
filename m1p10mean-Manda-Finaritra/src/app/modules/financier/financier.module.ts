@@ -7,6 +7,7 @@ import { StatComponent } from './view/stat/stat.component';
 import { SharedModule } from '../shared/shared.module';
 import * as CanvasJSAngularChart from '../../../../src/assets/canvasjs.angular.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
   imports: [
     CommonModule,
     FinancierRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class FinancierModule { }

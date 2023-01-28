@@ -15,24 +15,24 @@
                                     <h5>Temps de réparation moyen pour une voiture</h5>
                                 </div>
                                 <div class="card-body" style="text-align: center;">
-                                    <select name="" id="" aria-label="Default select example">
-                                        <option value="">Choisir année</option>
-                                        <option value="">2017</option>
-                                        <option value="">2018</option>
-                                        <option value="">2019</option>
-                                        <option value="">2020</option>
-                                        <option value="">2021</option>
-                                        <option value="">2022</option>
-                                        <option value="">2023</option>
-                                    </select>
-                                    <p> {{tempsMoyenne | number: '1.0-0'}} jours </p>
+                                    <!-- <select name="" id="" aria-label="Default select example">
+                                        <option default>Choisir année</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                    </select> -->
+                                    <h4> {{tempsMoyenne | number: '1.0-0'}} jours </h4>
                                 </div>
                             </div>                           
                         </div>
                         <div class="col-md-2"></div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="card-header" style="text-align: center;">
                                     <h5>Chiffre d’affaires par jour, par mois</h5>
@@ -46,47 +46,35 @@
                                 </div>
                             </div>                                                      
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12" style="margin-top: 2%;">
                             <div class="card shadow">
                                 <div class="card-header" style="text-align: center;">
                                     <h5>Bénéfice par mois en entrant les dépenses</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="dropdown">
-                                        <div style="margin-bottom: 5%;">
-                                            <select name="" id="" aria-label="Default select example">
-                                                <option value="">Choisir mois</option>
-                                                <option value="">Janvier</option>
-                                                <option value="">Fevrier</option>
-                                                <option value="">Mars</option>
-                                                <option value="">Avril</option>
-                                                <option value="">Mai</option>
-                                                <option value="">Juin</option>
-                                                <option value="">Juillet</option>
-                                                <option value="">Aout</option>
-                                                <option value="">Septembre</option>
-                                                <option value="">Octobre</option>
-                                                <option value="">Novembre</option>
-                                                <option value="">Décembre</option>
-                                            </select>   
-                                            <select name="" id="" aria-label="Default select example" style="margin-left: 2%;">
-                                                <option value="">Choisir année</option>
-                                                <option value="">2017</option>
-                                                <option value="">2018</option>
-                                                <option value="">2019</option>
-                                                <option value="">2020</option>
-                                                <option value="">2021</option>
-                                                <option value="">2022</option>
-                                                <option value="">2023</option>
-                                            </select>  
-                                        </div>
-                                        <canvasjs-chart [options]="chartOptionsPie" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>
-                                    </div>                     
+                                        <form [formGroup]="beneficeForm" (ngSubmit)="initLabel()">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="Salaire">Salaire:</label>
+                                                    <input type="number" ondrop="return false;" onpaste="return false;"
+                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" min="0" [(ngModel)]="salaire">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="Salaire">Loyer:</label>
+                                                    <input type="number" [(ngModel)]="loyer">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="Salaire">Autre dépense</label>
+                                                    <input type="number" [(ngModel)]="autreDepenseParMois">
+                                                </div>
+                                            </div>  
+                                            <button class="btn btn-primary">valider</button>                                             
+                                        </form>
+                                    <canvasjs-chart [options]="chartOptionsPie" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>                                                        
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
