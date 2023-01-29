@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { HttpResponseModel } from "../../models/http-response-model";
 import { environment } from '../../../environments/environment';
 import { User } from "../../models/user";
+import { Users } from 'src/app/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthentificationService {
   authToken: any;
   acces: any;
   user: any;
+  users: any;
   
   constructor(private httpClient: HttpClient, private securiteService: SecuriteService) {
     this.loadToken();
@@ -59,6 +61,7 @@ export class AuthentificationService {
     if (stringUserCrypted) {
       const stringUser = this.securiteService.decryptData(stringUserCrypted);
       if (stringUser) {
+        console.log(stringUser)
         return JSON.parse(stringUser);
       }
     }
@@ -137,6 +140,19 @@ export class AuthentificationService {
     this.user = user;
   }
 
+  storeUserDataClient(token: string, users: any): void {
+    const cryptToken = this.securiteService.encryptData(token);
+    if (cryptToken) {
+      localStorage.setItem('id_token', cryptToken);
+    }
+    const cryptedData = this.securiteService.encryptData(JSON.stringify(users));
+    if (cryptedData) {
+      localStorage.setItem('users', cryptedData);
+    }
+    this.authToken = token;
+    this.users = users;
+  }
+
   /**
    * Permet de sauvegarder les informations de l'utilisateur uniquement
    * @param user | User le model user
@@ -161,12 +177,23 @@ export class AuthentificationService {
     });
   }
 
+  loginClient(email: string, password: string): Observable<{ user: User, token: string }> {
+    return this.httpClient.post<{ user: User, token: string }>(environment.end_point + 'users/login', {
+      email: email,
+      password: password
+    });
+  }
+
   /**
    * Permet au client de creer un compte
    * @param user | User model user
    */
   signUp(user: User): Observable<HttpResponseModel<User>> {
     return this.httpClient.post<HttpResponseModel<User>>(environment.end_point + 'user/signup', user);
+  }
+
+  signUpClient(user: Users): Observable<{ user: Users, token: string }> {
+    return this.httpClient.post<{ user: Users, token: string }>(environment.end_point + 'users/signup', user);
   }
 
   /**

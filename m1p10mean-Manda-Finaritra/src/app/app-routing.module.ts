@@ -8,8 +8,20 @@ const routes: Routes = [
     loadChildren: () => import('./modules/authentification/authentification.module').then(m => m.AuthentificationModule)
   },
   {
+    path: 'ateliergarage',
+    loadChildren: () => import('./modules/ateliergarage/ateliergarage.module').then(m => m.AteliergarageModule)
+  },
+  {
+    path: 'garage',
+    loadChildren: () => import('./modules/garage/garage-routing.module').then(m => m.GarageRoutingModule)
+  },
+  {
     path: 'atelier',
     loadChildren: () => import('./modules/atelier/atelier.module').then(m => m.AtelierModule)
+  },
+  {
+    path: 'clientgarage',
+    loadChildren: () => import('./modules/clientgarage/clientgarage-routing.module').then(m => m.ClientgarageRoutingModule)
   },
   {
     path: 'financier',

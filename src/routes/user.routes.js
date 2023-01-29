@@ -35,6 +35,7 @@ router.get('/:id', async (req, res) => {
 router.get('/atelier/:loginType', async (req, res) => {
     try {
         console.log("atelier");
+        console.log(req.params.loginType);
         const filter = {}
         if (req.params.loginType){
             filter.loginType = req.params.loginType;
@@ -47,7 +48,7 @@ router.get('/atelier/:loginType', async (req, res) => {
             "loginType" : req.params.loginType,
             "voiture.estDansLeGarage" : false
         });
-        // console.log("Get all client type: ", result);
+        console.log("Get all client type: ", result);
         res.json(result);
     } catch (error) {
         console.log(error)

@@ -39,6 +39,7 @@ export class ListeAtelierComponent implements OnInit {
       this.load = true;
       this.atelierService.getAll(0).subscribe((res) => {
         this.dataResultUser = res;
+        console.log(res);
         for (let i = 0; i < this.dataResultUser.length; i++) {
           for (let j = 0; j < this.dataResultUser[i].voiture.length; j++) {
             if(this.dataResultUser[i].voiture[j].estDansLeGarage == true){

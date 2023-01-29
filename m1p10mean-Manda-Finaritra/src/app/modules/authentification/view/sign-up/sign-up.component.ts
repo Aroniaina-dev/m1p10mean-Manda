@@ -83,9 +83,6 @@ export class SignUpComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      // Mila atao type text le profil picture vao mazaka anle base64
-      // this.profilePicture = String(reader.result);
-      // this.ngOnInit();
       console.log(this.formGroup.value);
     };
   }

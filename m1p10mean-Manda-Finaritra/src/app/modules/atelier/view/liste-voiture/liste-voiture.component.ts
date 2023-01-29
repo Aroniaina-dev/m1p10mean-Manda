@@ -58,6 +58,8 @@ export class ListeVoitureComponent implements OnInit {
     } catch (error) {
       alert(error);
     }
+
+    console.log(this.dataResultUser);
   }
 
   initDataVoitureTerminer(): void {
@@ -280,17 +282,12 @@ export class ListeVoitureComponent implements OnInit {
 
  @ViewChild('content') content!: ElementRef;
  savePdf() {
-  const doc = new jsPDF();
-
+  const doc = new jsPDF('p', 'mm', 'a4');
   const pdfTable = this.content.nativeElement;
-
   doc.html(pdfTable.innerHTML, {
     callback(rst) {
       rst.save('one.pdf');
     },
-    x: 10,
-    y: 10
   });
-
 }
 }

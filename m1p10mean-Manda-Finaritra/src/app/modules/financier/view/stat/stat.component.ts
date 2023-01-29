@@ -5,7 +5,6 @@ import { User } from 'src/app/models/user';
 import { Materiel } from 'src/app/models/materiel';
 import { Chart } from "chart.js";
 import { VoitureTemp } from 'src/app/models/voitureTemp';
-import { HttpClient } from '@angular/common/http';
 
 
 
@@ -72,6 +71,7 @@ export class StatComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.data = await this.atelierService.getAllVoitureTemp().toPromise() as VoitureTemp[];
+		console.log(this.data);
 		this.getAllVoitureTempBase();
 		this.getJourMoisDeLAnnee("2021", "05");
 		this.initLabel();
