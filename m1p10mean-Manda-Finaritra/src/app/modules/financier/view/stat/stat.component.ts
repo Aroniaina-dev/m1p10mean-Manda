@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { AtelierService } from 'src/app/services/AtelierService/atelier.service';
 import { User } from 'src/app/models/user';
 import { Materiel } from 'src/app/models/materiel';
-import { Voiture } from 'src/app/models/voiture';
 import { Chart } from "chart.js";
 import { VoitureTemp } from 'src/app/models/voitureTemp';
-import { HttpResponseModel } from "../../../../models/http-response-model";
-import { Observable } from 'rxjs/internal/Observable';
-import { Subject } from 'rxjs/internal/Subject';
+import { HttpClient } from '@angular/common/http';
+
+
 
 export interface data {
 	[key: string]: any;
@@ -36,7 +33,20 @@ export class StatComponent implements OnInit {
 	prixFinalTemp!: number;
 	tempsMoyenne: number = 0;
 	temporaireTableu: number[] = [];
-	listeFinal = [{}];
+	listeFinal = [{ x: new Date(), y: 0 }];
+	chartDayMonth = [{ label: "1", y: 0 }];
+	chartDayMonthFevrier = [{ label: "1", y: 0 }];
+	chartDayMonthMars = [{ label: "1", y: 0 }];
+	chartDayMonthAvril = [{ label: "1", y: 0 }];
+	chartDayMonthMai = [{ label: "1", y: 0 }];
+	chartDayMonthJuin = [{ label: "1", y: 0 }];
+	chartDayMonthJuillet = [{ label: "1", y: 0 }];
+	chartDayMonthAout = [{ label: "1", y: 0 }];
+	chartDayMonthSeptembre = [{ label: "1", y: 0 }];
+	chartDayMonthOctobre = [{ label: "1", y: 0 }];
+	chartDayMonthNovembre = [{ label: "1", y: 0 }];
+	chartDayMonthDecembre = [{ label: "1", y: 0 }];
+	infoOnClick = { id: 0, y: 0, name: "", color: "", indexLabel: "" };
 	dataYear = [{}];
 	listeMois = [new Date(2022, 0, 1), new Date(2022, 1, 1), new Date(2022, 2, 2), new Date(2022, 3, 1), new Date(2022, 4, 1), new Date(2022, 5, 1), new Date(2022, 6, 1), new Date(2022, 7, 1), new Date(2022, 8, 1), new Date(2022, 9, 1), new Date(2022, 10, 1)];
 	listeValeurInitialBenefice = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -46,10 +56,11 @@ export class StatComponent implements OnInit {
 	dataJanv = [];
 	dataFev = [];
 	dataMars = [];
-	salaire = 5000;
-	loyer = 5000;
+	karama = 50;
+	loyer = 50;
 	autreDepenseParMois = 0;
-
+	data!: VoitureTemp[];
+	myNumber!: number;
 
 	listeVoitureTemp!: VoitureTemp[];
 
@@ -59,20 +70,20 @@ export class StatComponent implements OnInit {
 	) {
 	}
 
-	ngOnInit(): void {
-		this.getInitialDataVoiture();
+	async ngOnInit(): Promise<void> {
+		this.data = await this.atelierService.getAllVoitureTemp().toPromise() as VoitureTemp[];
 		this.getAllVoitureTempBase();
-		this.initData();
 		this.getJourMoisDeLAnnee("2021", "05");
 		this.initLabel();
-		this.initFormBenefice();
-
+		await this.initFormBenefice();
+		this.initChartBeneficeParJour("01");
 	}
 
 	initFormBenefice(): void {
 		this.beneficeForm = this.fB.group({
-			salaire: [this.salaire],
+			
 			loyer: [this.loyer],
+			karama: [this.karama],
 			autreDepenseParMois: [this.autreDepenseParMois],
 		});
 	}
@@ -81,53 +92,22 @@ export class StatComponent implements OnInit {
 		return this.beneficeForm.controls;
 	}
 
-
-
-
-
 	getAllVoitureTempBase(): void {
 		try {
 			this.load = true;
-			// this.atelierService.getAllVoitureTemp().subscribe((res) => {
-			// 	this.listeVoitureTemp = res;
-			// 	for (let i = 0; i < this.listeVoitureTemp.length; i++) {
-			// 		for (let j = 0; j < this.listeVoitureTemp[i].reparation.length; j++) {
-			// 			const diff = this.calculateDiffDate(this.listeVoitureTemp[i].reparation[j].dateDebutReparation, this.listeVoitureTemp[i].reparation[j].dateFinReparation);
-			// 			this.temporaireTableu.push(Number(diff));
-			// 		}
-			// 	}
-
-			// 	for (let i = 0; i < this.temporaireTableu.length; i++) {
-			// 		this.tempsMoyenne = this.tempsMoyenne + this.temporaireTableu[i];
-			// 	}
-
-			// 	console.log(this.tempsMoyenne);
-			// 	this.tempsMoyenne = this.tempsMoyenne / this.temporaireTableu.length;
-			// 	this.load = false;
-			// });
-		} catch (error) {
-			alert(error);
-		}
-		console.log(this.listeVoitureTemp);
-	}
-
-
-	initData(): void {
-		try {
-			this.load = true;
-			this.atelierService.getAllFinancier(0).subscribe((res) => {
-				this.dataResultUser = res;
-				for (let i = 0; i < this.dataResultUser.length; i++) {
-					for (let j = 0; j < this.dataResultUser[i].voiture.length; j++) {
-						for (let k = 0; k < this.dataResultUser[i].voiture[j].materiel.length; k++) {
-							const diff = this.calculateDiffDate(this.dataResultUser[i].voiture[j].materiel[k].dateDebutReparation, this.dataResultUser[i].voiture[j].materiel[k].dateFinReparation);
-							this.temporaireTableu.push(Number(diff));
-						}
+			this.atelierService.getAllVoitureTemp().subscribe((res) => {
+				this.listeVoitureTemp = res;
+				for (let i = 0; i < this.listeVoitureTemp.length; i++) {
+					for (let j = 0; j < this.listeVoitureTemp[i].reparation.length; j++) {
+						const diff = this.calculateDiffDate(this.listeVoitureTemp[i].reparation[j].dateDebutReparation, this.listeVoitureTemp[i].reparation[j].dateFinReparation);
+						this.temporaireTableu.push(Number(diff));
 					}
 				}
+
 				for (let i = 0; i < this.temporaireTableu.length; i++) {
 					this.tempsMoyenne = this.tempsMoyenne + this.temporaireTableu[i];
 				}
+
 				this.tempsMoyenne = this.tempsMoyenne / this.temporaireTableu.length;
 				this.load = false;
 			});
@@ -150,13 +130,14 @@ export class StatComponent implements OnInit {
 		}
 	}
 
-	getInitialDataVoiture() {
-		this.load = true;
-		let totalQuestions: VoitureTemp[];
-		
+	tesFunction(){
+		console.log(this.karama);
+		console.log(this.loyer);
+		console.log(this.autreDepenseParMois);
 	}
 
-	async initLabel(): Promise<void> {
+	initLabel(): void {
+		
 		for (let i = 0; i < this.listeMois.length; i++) {
 			if (this.listeMois[i].getFullYear() == 2022) {
 				this.listeFinal.push({ x: this.listeMois[i], y: this.listeValeurInitialBenefice[i] })
@@ -166,9 +147,18 @@ export class StatComponent implements OnInit {
 			}
 		}
 		this.listeFinal.splice(0, 1);
-		let result: HttpResponseModel<VoitureTemp[]>;
-		result = await this.atelierService.getAllVoitureTemp().getData().toPromise();
 
+
+		for (let i = 0; i < this.data.length; i++) {
+			for (let j = 0; j < this.data[i].reparation.length; j++) {
+				let mois = this.stringAsDate(this.data[i].reparation[j].dateFinReparation).getMonth() + 1;
+				let price = this.data[i].reparation[j].prix;
+				let piecePrice = this.data[i].reparation[j].prixPiece;
+				let valeurFinal = price - piecePrice - this.karama - this.loyer - this.autreDepenseParMois;
+				this.listeFinal[mois].y = valeurFinal;
+			}
+
+		}
 	}
 
 	getJourMoisDeLAnnee(annee: string, mois: string) {
@@ -182,6 +172,83 @@ export class StatComponent implements OnInit {
 			}
 		}
 		return DaysInMonth;
+	}
+
+	async initChartBeneficeParJour(month: string) {
+		const listeJour = this.getJourMoisDeLAnnee("2022", month);
+		
+		for (let i = 1; i <= listeJour; i++) {
+			for (let j = 0; j < this.data.length; j++) {
+				for (let k = 0; k < this.data[j].reparation.length; k++) {
+					const getMoisId = this.stringAsDate(this.data[j].reparation[k].dateFinReparation).getMonth();
+					if(i == getMoisId){
+						if(getMoisId ==1){
+							this.chartDayMonth.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==2){
+							this.chartDayMonthFevrier.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==3){
+							this.chartDayMonthMars.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==4){
+							this.chartDayMonthAvril.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==5){
+							this.chartDayMonthMai.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==6){
+							this.chartDayMonthJuin.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==7){
+							this.chartDayMonthJuillet.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId ==8){
+							this.chartDayMonthAout.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId == 9){
+							this.chartDayMonthSeptembre.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId == 10){
+							this.chartDayMonthOctobre.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId == 11){
+							this.chartDayMonthNovembre.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+						else if(getMoisId == 12){
+							this.chartDayMonthDecembre.push({ label: getMoisId.toString(), y: this.data[j].reparation[k].prix })
+						}
+
+					}
+					else{
+						if(i<=30){
+							this.chartDayMonthAvril.push({ label: i.toString(), y: 0 });							
+							this.chartDayMonthJuin.push({ label: i.toString(), y: 0 });							
+							this.chartDayMonthSeptembre.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthNovembre.push({ label: i.toString(), y: 0 });
+						}
+						if(i<=28){
+							this.chartDayMonthFevrier.push({ label: i.toString(), y: 0 });
+						}
+						if(i<31){
+							this.chartDayMonth.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthMars.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthMai.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthJuillet.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthAout.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthOctobre.push({ label: i.toString(), y: 0 });
+							this.chartDayMonthDecembre.push({ label: i.toString(), y: 0 });
+						}
+						
+
+					}
+				}
+			}
+		} 
+		
+
+		this.listeFinal.splice(0, 1);
+		this.chartDayMonthFevrier.splice(0, 1);
 	}
 
 	chartOptionsPie = {
@@ -219,20 +286,6 @@ export class StatComponent implements OnInit {
 			showInLegend: true,
 			yValueFormatString: "#,###Ar",
 			dataPoints: this.listeFinal
-			// [		
-			// 	{ x: new Date(2021, 0, 1), y: 27 },
-			// 	{ x: new Date(2021, 1, 1), y: 28 },
-			// 	{ x: new Date(2021, 2, 1), y: 35 },
-			// 	{ x: new Date(2021, 3, 1), y: 45 },
-			// 	{ x: new Date(2021, 4, 1), y: 54 },
-			// 	{ x: new Date(2021, 5, 1), y: 64 },
-			// 	{ x: new Date(2021, 6, 1), y: 69 },
-			// 	{ x: new Date(2021, 7, 1), y: 68 },
-			// 	{ x: new Date(2021, 8, 1), y: 61 },
-			// 	{ x: new Date(2021, 9, 1), y: 50 },
-			// 	{ x: new Date(2021, 10, 1), y: 41 },
-			// 	{ x: new Date(2021, 11, 1), y: 33 }
-			// ]
 		}]
 
 	}
@@ -268,12 +321,34 @@ export class StatComponent implements OnInit {
 	isButtonVisible = false;
 
 	visitorsChartDrilldownHandler = (e: any) => {
-
+		this.chartDayMonth = [{ label: "1", y: 0 }];
+		this.chartDayMonthFevrier = [{ label: "1", y: 0 }];
+		this.chartDayMonthMars = [{ label: "1", y: 0 }];
+		this.chartDayMonthAvril = [{ label: "1", y: 0 }];
+		this.chartDayMonthMai = [{ label: "1", y: 0 }];
+		this.chartDayMonthJuin = [{ label: "1", y: 0 }];
+		this.chartDayMonthJuillet = [{ label: "1", y: 0 }];
+		this.chartDayMonthAout = [{ label: "1", y: 0 }];
+		this.chartDayMonthSeptembre = [{ label: "1", y: 0 }];
+		this.chartDayMonthOctobre = [{ label: "1", y: 0 }];
+		this.chartDayMonthNovembre = [{ label: "1", y: 0 }];
+		this.chartDayMonthDecembre = [{ label: "1", y: 0 }];
+		const idTemp = e.dataPoint.id + 1;
+		this.initChartBeneficeParJour(idTemp.toString());
 		this.chart.options = this.visitorsDrilldownedChartOptions;
 		this.chart.options.data = this.options[e.dataPoint.name];
+		this.chart.options.data.color = "red";
 		this.chart.options.title = { text: e.dataPoint.name }
-		this.chart.render();
+
+		this.tempNameMonth = e.dataPoint.name;
+		this.infoOnClick.id = e.dataPoint.id;
+		this.infoOnClick.y = e.dataPoint.y;
+		this.infoOnClick.name = e.dataPoint.name;
+		this.infoOnClick.color = e.dataPoint.color;
 		this.isButtonVisible = true;
+
+		this.chart.render();
+
 	}
 
 	visitorsDrilldownedChartOptions = {
@@ -302,18 +377,16 @@ export class StatComponent implements OnInit {
 		data: []
 	};
 
-	initChartChiffreDAffaire() {
-		const listeAnnee = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
-			"Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"]
-		this.dataYear = [{}];
-		let compteDay = this.getJourMoisDeLAnnee("2022", "01");
 
+	initTestChart(): void {
+		this.visitorsDrilldownedChartOptions;
+		console.log(this.tempNameMonth);
 	}
 
 	options: data = {
-		"New vs Returning Visitors": [{
+		"chartMonth": [{
 			type: "pie",
-			name: "New vs Returning Visitors",
+			name: "chartMonth",
 			startAngle: 90,
 			cursor: "pointer",
 			explodeOnClick: false,
@@ -337,57 +410,122 @@ export class StatComponent implements OnInit {
 				{ id: 11, y: 329840, name: "Decembre", color: "#B0C4DE", indexLabel: "Dec 8,3%" }
 			]
 		}],
+
+
 		"Janvier": [{
 			color: "#058dc7",
-			name: "Janvier",
+			name: this.infoOnClick.name,
 			type: "column",
-			dataPoints: [
-				{ label: "1", y: 42600 },
-				{ label: "2", y: 44960 },
-				{ label: "3", y: 46160 },
-				{ label: "4", y: 48240 },
-				{ label: "5", y: 48200 },
-				{ label: "6", y: 49600 },
-				{ label: "7", y: 51560 },
-				{ label: "8", y: 49280 },
-				{ label: "9", y: 46800 },
-				{ label: "10", y: 57720 },
-				{ label: "11", y: 59840 },
-				{ label: "12", y: 54400 },
-				{ label: "13", y: 42600 },
-				{ label: "14", y: 44960 },
-				{ label: "15", y: 46160 },
-				{ label: "16", y: 48240 },
-				{ label: "17", y: 48200 },
-				{ label: "18", y: 49600 },
-				{ label: "19", y: 51560 },
-				{ label: "20", y: 49280 },
-				{ label: "21", y: 46800 },
-				{ label: "22", y: 57720 },
-				{ label: "23", y: 59840 },
-				{ label: "24", y: 54400 },
-				{ label: "25", y: 51560 },
-				{ label: "26", y: 49280 },
-				{ label: "27", y: 46800 },
-				{ label: "28", y: 57720 },
-				{ label: "29", y: 59840 },
-				{ label: "30", y: 54400 },
-				{ label: "31", y: 54400 },
-			]
+			dataPoints:
+				this.chartDayMonth
+
+		}],
+
+		"Fevrier": [{
+			color: "#50b432",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthFevrier
+
+		}],
+		"Mars": [{
+			color: "#752b15",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthMars
+
+		}],
+		"Avril": [{
+			color: "#FDF5E6",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthAvril
+
+		}],
+		"Mai": [{
+			color: "#00CED1",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthMai
+
+		}],
+		"Juin": [{
+			color: "#FF7F50",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthJuin
+
+		}],
+		"Juillet": [{
+			color: "#FFA07A",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthJuillet
+
+		}],
+		"Aout": [{
+			color: "#DEB887",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthAout
+
+		}],
+		"Septembre": [{
+			color: "#9ACD32",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthSeptembre
+
+		}],
+		"Octobre": [{
+			color: "#00CED1",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthOctobre
+
+		}],
+		"Novembre": [{
+			color: "#66CDAA",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthNovembre
+
+		}],
+		"Decembre": [{
+			color: "#B0C4DE",
+			name: this.infoOnClick.name,
+			type: "column",
+			dataPoints:
+				this.chartDayMonthDecembre
+
 		}],
 	};
 
+
+	tempNameMonth!: string;
+
 	handleClick(event: Event) {
 		this.chart.options = this.newVSReturningVisitorsOptions;
-		this.chart.options.data = this.options["New vs Returning Visitors"];
+		this.chart.options.data = this.options["chartMonth"];
 		this.chart.render();
 		this.isButtonVisible = false;
+
 	}
 
 	getChartInstance(chart: object) {
 		this.chart = chart;
 		this.chart.options = this.newVSReturningVisitorsOptions;
-		this.chart.options.data = this.options["New vs Returning Visitors"];
+		this.chart.options.data = this.options["chartMonth"];
 		this.chart.render();
 	}
 }

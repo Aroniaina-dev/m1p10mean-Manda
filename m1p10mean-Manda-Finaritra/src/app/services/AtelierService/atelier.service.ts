@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpResponseModel } from 'src/app/models/http-response-model';
+import { Reparation } from 'src/app/models/reparation';
 import { User } from 'src/app/models/user';
 import { VoitureTemp } from 'src/app/models/voitureTemp';
 import { environment } from 'src/environments/environment';
@@ -82,8 +83,11 @@ export class AtelierService {
     return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/payement/"+idVoiture, user);
   }
 
-  getAllVoitureTemp(): Observable<HttpResponseModel<VoitureTemp[]>> {
-    return this.httpClient.get<HttpResponseModel<VoitureTemp[]>>(environment.end_point+"voitureTemp");
+  getAllVoitureTemp(): Observable<VoitureTemp[]> {
+    return this.httpClient.get<VoitureTemp[]>(environment.end_point+"voitureTemp");
   }
 
+  getAllVoitureTempReparation(): Observable<Reparation[]> {
+    return this.httpClient.get<Reparation[]>(environment.end_point+"voitureTemp/reparation");
+  }
 }

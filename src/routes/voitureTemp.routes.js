@@ -17,24 +17,25 @@ router.get('/generate', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const filter = {}
-        // if (req.query.id) filter._id = req.query.id
-        const result = new HttpResponse (await VoitureTemp.find(filter, null, { sort: { updatedAt: 1 } }))
+        const result = await VoitureTemp.find(filter, null, { sort: { updatedAt: 1 } });
         console.log('get All VoitureTemp', result);
-        res.status(result.statusCode).json(result);
+        res.json(result);
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
     }
 })
 
-exports.statMulti = async (req, res, next) => {
-    try{
-        const result = await service.statMulti(req.body);
-        res.status(result.statusCode).json(result);
-
-    }catch(e){
-        res.status(errorResponse.statusCode).json(errorResponse);
+router.get('/reparation', async (req, res) => {
+    try {
+        const filter = {}
+        const result = await VoitureTemp.find(filter, null, { sort: { updatedAt: 1 } });
+        console.log('get All VoitureTemp Reparation', result);
+        res.json(result);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
     }
-}
+})
 
 module.exports = router;

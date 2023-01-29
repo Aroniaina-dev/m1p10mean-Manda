@@ -1,4 +1,3 @@
-
 <div id="page-top">
     <div id="wrapper">
         <app-sidebar></app-sidebar>
@@ -15,19 +14,9 @@
                                     <h5>Temps de réparation moyen pour une voiture</h5>
                                 </div>
                                 <div class="card-body" style="text-align: center;">
-                                    <!-- <select name="" id="" aria-label="Default select example">
-                                        <option default>Choisir année</option>
-                                        <option value="2017">2017</option>
-                                        <option value="2018">2018</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2023">2023</option>
-                                    </select> -->
                                     <h4> {{tempsMoyenne | number: '1.0-0'}} jours </h4>
                                 </div>
-                            </div>                           
+                            </div>
                         </div>
                         <div class="col-md-2"></div>
                     </div>
@@ -38,13 +27,15 @@
                                     <h5>Chiffre d’affaires par jour, par mois</h5>
                                 </div>
                                 <div class="card-body">
-                                    <!-- <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart> -->
                                     <div>
-                                        <canvasjs-chart [options]="chartOptions" (chartInstance)="getChartInstance($event)" [styles]="{width: '100%', height: '410px'}"></canvasjs-chart>
-                                        <button [ngClass]="'backButton'" *ngIf="this.isButtonVisible" (click)="handleClick($event)">Back</button>
+                                        <canvasjs-chart [options]="chartOptions"
+                                            (chartInstance)="getChartInstance($event)"
+                                            [styles]="{width: '100%', height: '410px'}"></canvasjs-chart>
+                                        <button [ngClass]="'backButton'" *ngIf="this.isButtonVisible"
+                                            (click)="handleClick($event)">Back</button>
                                     </div>
                                 </div>
-                            </div>                                                      
+                            </div>
                         </div>
                         <div class="col-md-12" style="margin-top: 2%;">
                             <div class="card shadow">
@@ -52,25 +43,37 @@
                                     <h5>Bénéfice par mois en entrant les dépenses</h5>
                                 </div>
                                 <div class="card-body">
-                                        <form [formGroup]="beneficeForm" (ngSubmit)="initLabel()">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label for="Salaire">Salaire:</label>
-                                                    <input type="number" ondrop="return false;" onpaste="return false;"
-                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" min="0" [(ngModel)]="salaire">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="Salaire">Loyer:</label>
-                                                    <input type="number" [(ngModel)]="loyer">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label for="Salaire">Autre dépense</label>
-                                                    <input type="number" [(ngModel)]="autreDepenseParMois">
-                                                </div>
-                                            </div>  
-                                            <button class="btn btn-primary">valider</button>                                             
-                                        </form>
-                                    <canvasjs-chart [options]="chartOptionsPie" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>                                                        
+                                    <form [formGroup]="beneficeForm" (ngSubmit)="tesFunction()">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label for="Salaire">Salaire: </label>
+                                                <input type="number" ondrop="return false;" onpaste="return false;"
+                                                    class="form-control" [(ngModel)]="karama" formControlName="karama"
+                                                    name="karama"
+                                                    onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                    min="0">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="Salaire">Loyer: </label>
+                                                <input type="number" ondrop="return false;" onpaste="return false;"
+                                                    class="form-control" [(ngModel)]="loyer" formControlName="loyer"
+                                                    name="loyer"
+                                                    onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                    min="0">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="Salaire">Autre dépense: </label>
+                                                <input type="number" ondrop="return false;" onpaste="return false;"
+                                                    class="form-control" [(ngModel)]="autreDepenseParMois" formControlName="autreDepenseParMois"
+                                                    name="autreDepenseParMois"
+                                                    onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                    min="0">
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary">valider</button>
+                                    </form>
+                                    <canvasjs-chart [options]="chartOptionsPie"
+                                        [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>
                                 </div>
                             </div>
                         </div>
