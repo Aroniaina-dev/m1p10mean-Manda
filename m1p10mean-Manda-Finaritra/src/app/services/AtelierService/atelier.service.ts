@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpResponseModel } from 'src/app/models/http-response-model';
+import { Materiel } from 'src/app/models/materiel';
 import { Reparation } from 'src/app/models/reparation';
 import { User } from 'src/app/models/user';
 import { VoitureTemp } from 'src/app/models/voitureTemp';
@@ -56,7 +57,7 @@ export class AtelierService {
   }
 
   changeStatesGarage(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
-    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture/"+idVoiture, user);
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/voiture"+"/"+idVoiture, user);
   }
 
   changeStatesReparer(user: User, idVoiture: string, idMateriel: string): Observable<HttpResponseModel<User>> {
@@ -89,5 +90,15 @@ export class AtelierService {
 
   getAllVoitureTempReparation(): Observable<Reparation[]> {
     return this.httpClient.get<Reparation[]>(environment.end_point+"voitureTemp/reparation");
+  }
+
+  addMateriel(user: User, materiel: Materiel, idUser:string,  idVoiture: number): Observable<HttpResponseModel<User>> {
+    return this.httpClient.post<HttpResponseModel<User>>(environment.end_point+"user/ajout_materiel/"+idUser+"/"+idVoiture, {
+      materiel: materiel
+    });
+  }
+
+  deleteVoiture(idUser:string,  idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.delete<HttpResponseModel<User>>(environment.end_point+"user/delete_voiture/"+idUser+"/"+idVoiture);
   }
 }

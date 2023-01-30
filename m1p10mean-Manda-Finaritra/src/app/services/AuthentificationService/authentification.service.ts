@@ -61,7 +61,6 @@ export class AuthentificationService {
     if (stringUserCrypted) {
       const stringUser = this.securiteService.decryptData(stringUserCrypted);
       if (stringUser) {
-        console.log(stringUser)
         return JSON.parse(stringUser);
       }
     }

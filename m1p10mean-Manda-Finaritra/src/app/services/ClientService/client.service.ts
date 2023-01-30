@@ -41,8 +41,8 @@ export class ClientService {
     return this.http.get(environment.end_point+`/userVoiture`,{observe:'response',withCredentials : true});
   }
 
-  getReparation(id:string): Observable<any> {
-    return this.http.get(environment.end_point+`/reparation/${id}`,{observe:'response',withCredentials : true});
+  getReparation(): Observable<any> {
+    return this.http.get(environment.end_point+"voitureTemp/listereparation");
   }
 
   finishedReparation(idReparation:string,idVoiture:string): Observable<any> {

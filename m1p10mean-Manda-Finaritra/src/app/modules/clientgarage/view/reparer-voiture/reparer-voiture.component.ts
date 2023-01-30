@@ -12,7 +12,7 @@ import { AuthentificationService } from 'src/app/services/AuthentificationServic
   styleUrls: ['./reparer-voiture.component.css']
 })
 export class ReparerVoitureComponent implements OnInit {
-
+  voiture!: Car[];
   marque!: string;
   modele!: string;
   type!: string;
@@ -20,10 +20,12 @@ export class ReparerVoitureComponent implements OnInit {
 
   constructor(private clientService: ClientService, private authentificationService: AuthentificationService,
     private router: Router) { }
+
+
   ngOnInit(): void {
+    this.getReparation();
     console.log("mande le code")
-    const user = this.authentificationService.getUser();
-    console.log(user);
+    const user = this.authentificationService.getUser();    
   }
 
   onMarque(marque : string){
@@ -66,6 +68,24 @@ export class ReparerVoitureComponent implements OnInit {
         }
       } );
     this.router.navigate(['Client/Reparation']);
+  }
+
+   // @ts-ignore
+   reparation: Array<Reparation>;
+   
+
+  getReparation() {
+    console.log("Ndao ndao ndao")
+    this.clientService.getReparation()
+      .subscribe(data => {
+        this.voiture = data;
+        console.log(this.voiture);
+      }, error => {
+        if (error.status == 403) {
+          localStorage.removeItem("token");
+          this.router.navigate(['']);
+        }
+      })
   }
 
 }

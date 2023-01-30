@@ -64,6 +64,11 @@ export class ListeAtelierComponent implements OnInit {
     return total;
   }
 
+  
+  get c(): any {
+    return this.userForm.controls;
+  }
+
   initForm(user: User): void {
     this.userForm = this.fB.group({
       _id: [user._id, [Validators.required]],
@@ -92,6 +97,10 @@ export class ListeAtelierComponent implements OnInit {
       });
   }
 
+  ajouterMateriel(user:User, idVoiture: string){
+    this.router.navigate(["/atelier/ajout_materiel/"+user._id+"/"+idVoiture])
+  }
+
   closeModal() {
     const btn = document.getElementById('updateCloseModal');
     if (btn) {
@@ -113,27 +122,27 @@ export class ListeAtelierComponent implements OnInit {
     }
   }
 
-  delete() {
-    // if (this.droitForm.valid) {
-    //   this.loader = true;
-    //   const droit: Droit = this.droitForm.value;
-    //   this.droitService.delete(droit._id).subscribe(res => {
-    //     this.loader = false;
-    //     if (!res.error) {
-    //       this.toastr.success('Le droit a été supprimé');
-    //       this.initData();
-    //       this.closeModalDelete();
-    //     } else {
-    //       this.toastr.error(res.message);
-    //     }
-    //   }, error => {
-    //     this.loader = false;
-    //   });
-    // }
+  idVaikaTemp!: string;
+  getIdVoiture(id:string){
+    this.idVaikaTemp = id;
   }
 
-  getUserCheck(id: string) {
-    this.router.navigate(['/admin/children/' + id]);
+  delete() {
+    console.log("Vaika: ",this.idVaikaTemp);
+    console.log("User: ",this.userForm.value);
+    this.loader = true;
+      this.atelierService.deleteVoiture(this.userForm.value._id, this.idVaikaTemp).subscribe(res => {
+        this.loader = false;
+        if (!res.error) {
+          this.toastr.success('La voiture a été supprimé dans le garage');
+          this.initData();
+          this.closeModal();
+        } else {
+          this.toastr.error(res.message);
+        }
+      }, error => {
+        this.loader = false;
+      });
   }
 
 }

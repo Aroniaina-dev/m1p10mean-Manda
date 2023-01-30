@@ -48,18 +48,26 @@ export class ListeVoitureComponent implements OnInit {
     this.voitureInitForm(new Voiture);
   }
 
-  initData(): void {
+  async initData(): Promise<void> {
     try {
       this.load = true;
       this.atelierService.getAll(0).subscribe((res) => {
         this.dataResultUser = res;
         this.load = false;
+        console.log(this.dataResultUser);
       });
     } catch (error) {
       alert(error);
     }
 
-    console.log(this.dataResultUser);
+    const user = await this.atelierService.getAll(0).toPromise() as User[];
+    if(user){
+      this.dataResultUser = user;
+      console.log(this.dataResultUser);
+    }else{
+      console.log("tsy misy uer");
+    }
+    
   }
 
   initDataVoitureTerminer(): void {
@@ -85,7 +93,6 @@ export class ListeVoitureComponent implements OnInit {
       loginType: [user.loginType],
       voiture: [user.voiture],
     });
-    console.log(this.userForm.value.nom);
   }
 
   voitureInitForm(voiture: Voiture): void {
@@ -119,7 +126,6 @@ export class ListeVoitureComponent implements OnInit {
       body: [this.bodyEmail],
       objet: ["Voiture réparé"]
     });
-    console.log(this.emailForm.value);
   }
 
   getVoitureEmail(modele: string, marque:string, immatriculation: string){

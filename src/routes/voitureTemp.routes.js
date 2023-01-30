@@ -43,22 +43,36 @@ router.get('/reparation', async (req, res) => {
 
 router.post('/ajout', async (req, res) => {
     try {
-        const voiture = new VoitureTemp({          
-            user : new ObjectID("63c9306e90ea5f086a002edf"),
+        const voiture = new VoitureTemp({
+            user: new ObjectID("63c9306e90ea5f086a002edf"),
             marque: req.body.marque,
-            type : req.body.type,
-            year : req.body.year,
-            immatriculation : req.body.matricule,
-            etat : req.body.etat,
-            reparation : []
-            });
-           
-            await voiture.save()  
+            type: req.body.type,
+            year: req.body.year,
+            immatriculation: req.body.matricule,
+            etat: req.body.etat,
+            reparation: []
+        });
+
+        await voiture.save()
             .then(() => console.log("voiture insérer"), res.send("success"))
-            .catch((err) => console.log(err))  
+            .catch((err) => console.log(err))
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
+    }
+})
+
+router.get('/listereparation', async (req, res) => {
+    try {
+        console.log("Miantso");
+        const voiture = await VoitureTemp.find()
+            .then((res) => this.voiture = res)
+            .catch((err) => console.log(err))
+        console.log(voiture)
+        res.send(voiture);
+
+    } catch (error) {
+        return res.json({ error: error });
     }
 })
 

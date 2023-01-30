@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/clientgarage/clientgarage-routing.module').then(m => m.ClientgarageRoutingModule)
   },
   {
+    path: 'clientuser',
+    loadChildren: () => import('./modules/clientuser/clientuser.module').then(m => m.ClientuserModule)
+  },
+  {
     path: 'financier',
     loadChildren: () => import('./modules/financier/financier.module').then(m => m.FinancierModule)
   },

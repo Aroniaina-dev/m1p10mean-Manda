@@ -1,0 +1,66 @@
+<div id="page-top">
+    <div id="wrapper">
+        <app-sidebar></app-sidebar>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <app-navbar></app-navbar>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-1">Liste dans l'atelier</h3>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <form [formGroup]="materielForm" (ngSubmit)="ajouter()">
+                                <div class="card shadow">
+                                    <div class="card-title" style="text-align: center;"><h3>{{voiture.immatriculation}}: {{voiture.marque}} {{voiture.modele}}</h3></div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Materiel :</label>
+                                            <input type="text" class="form-control"
+                                                formControlName="designationMateriel" [(ngModel)]="designationMateriel">
+                                            <div class="invalid-feedback">
+                                                Veuillez remplir le Materiel
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Prix :</label>
+                                            <input type="number" class="form-control" formControlName="prixReparation"
+                                                [(ngModel)]="prixReparation">
+                                            <div class="invalid-feedback">
+                                                Veuillez remplir le prixReparation
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-dark" style="float: right;" type="submit">Ajouter</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid" style="margin-top: 5%;">
+                    <h3 class="text-dark mb-1">Liste réparation</h3>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Materiel</th>
+                                        <th>Prix</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let m of dataResulMateriel; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{m.designationMateriel}}</td>
+                                            <td>{{m.prixReparation}} Ar</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

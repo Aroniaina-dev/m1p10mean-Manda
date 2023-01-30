@@ -6,6 +6,8 @@ import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ConfirmationDeleteModalComponent } from './components/confirmation-delete-modal/confirmation-delete-modal.component';
+import { HeaderclientComponent } from './components/headerclient/headerclient.component';
+import { FooterclientComponent } from './components/footerclient/footerclient.component';
 
 
 
@@ -14,7 +16,9 @@ import { ConfirmationDeleteModalComponent } from './components/confirmation-dele
     SidebarComponent,
     FooterComponent,
     NavbarComponent,
-    ConfirmationDeleteModalComponent
+    ConfirmationDeleteModalComponent,
+    HeaderclientComponent,
+    FooterclientComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +33,9 @@ import { ConfirmationDeleteModalComponent } from './components/confirmation-dele
     CommonModule,
     RouterModule,
     NavbarComponent,
-    ConfirmationDeleteModalComponent
+    ConfirmationDeleteModalComponent,
+    HeaderclientComponent,
+    FooterclientComponent
   ]
 })
 export class SharedModule { }

@@ -20,6 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     BrowserAnimationsModule
   ],
+  providers:[
+    FormsModule,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

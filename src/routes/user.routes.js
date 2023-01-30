@@ -34,19 +34,19 @@ router.get('/:id', async (req, res) => {
 
 router.get('/atelier/:loginType', async (req, res) => {
     try {
-        console.log("atelier");
+        // console.log("atelier");
         console.log(req.params.loginType);
         const filter = {}
-        if (req.params.loginType){
+        if (req.params.loginType) {
             filter.loginType = req.params.loginType;
-        } 
+        }
         else {
             res.status(400).json({ msg: 'ID required' })
             return
         }
         const result = await User.find({
-            "loginType" : req.params.loginType,
-            "voiture.estDansLeGarage" : false
+            "loginType": req.params.loginType,
+            // "voiture.estDansLeGarage": false
         });
         console.log("Get all client type: ", result);
         res.json(result);
@@ -60,15 +60,16 @@ router.get('/financier/:loginType', async (req, res) => {
     try {
         console.log("Finance");
         const filter = {}
-        if (req.params.loginType){
+        if (req.params.loginType) {
             filter.loginType = req.params.loginType;
-        } 
+        }
         else {
             res.status(400).json({ msg: 'ID required' })
             return
         }
         const result = await User.find({
-            "loginType" : req.params.loginType
+            "loginType": req.params.loginType,
+            "voiture.estPayer": false
         });
         // console.log("Get all client type: ", result);
         res.json(result);
@@ -82,30 +83,30 @@ router.get('/chart/:loginType', async (req, res) => {
     try {
         console.log("chart");
         const filter = {}
-        if (req.params.loginType){
+        if (req.params.loginType) {
             filter.loginType = req.params.loginType;
-        } 
+        }
         else {
             res.status(400).json({ msg: 'ID required' })
             return
         }
         const result = await User.aggregate(
             [
-              {
-                $group: {
-                  _id: { $dateToString: { format: "%Y-%m", date: "$date" } }
+                {
+                    $group: {
+                        _id: { $dateToString: { format: "%Y-%m", date: "$date" } }
+                    }
                 }
-              }
             ],
-        
-            function(err, result) {
-              if (err) {
-                res.send(err);
-              } else {
-                res.json(result);
-              }
+
+            function (err, result) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.json(result);
+                }
             }
-          );
+        );
         console.log("Get all client type: ", result);
         res.json(result);
     } catch (error) {
@@ -158,7 +159,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
     try {
-        console.log('signup', req.body)
+        console.log('signupss', req.body)
         const user = new User(req.body)
         const result = await User.findOne({ $or: [{ email: user.email }, { nom: user.nom }] })
         console.log('result', result)
@@ -256,21 +257,25 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
                     }
                 }
             },
-            { "$set": { 
-                "voiture.$[outer].materiel.$[inner].estReparer": true
-            } },
-            { "arrayFilters": [
-                { "outer._id": voiture_id },
-                { "inner._id": materiel_id }
-            ] }, (err, result) => {
-            if (err) {
-                console.log('Error updating service: ' + err);
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log(result)
-                return res.json(result);
-            }
-        })
+            {
+                "$set": {
+                    "voiture.$[outer].materiel.$[inner].estReparer": true
+                }
+            },
+            {
+                "arrayFilters": [
+                    { "outer._id": voiture_id },
+                    { "inner._id": materiel_id }
+                ]
+            }, (err, result) => {
+                if (err) {
+                    console.log('Error updating service: ' + err);
+                    res.send({ 'error': 'An error has occurred' });
+                } else {
+                    console.log(result)
+                    return res.json(result);
+                }
+            })
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
@@ -278,30 +283,30 @@ router.put('/voiture/:id/:idMateriel', async (req, res) => {
 })
 
 router.put('/bondesortie/:id', async (req, res) => {
-        try {
-            console.log("Facture");
-            var voiture_id = req.params.id;
-            const data = req.body
-            console.log(voiture_id);
-            User.updateOne({ 'voiture._id': voiture_id },
-                {
-                    '$set': {
-                        'voiture.$.bonDeSortie': true,
-                    }
-                },
-                function (err, model) {
-                    if (err) {
-                        console.log(err);
-                        return res.send(err);
-                    }
-                    console.log(model);
-                    return res.json(model);
-                });
-    
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({ msg: error })
-        }
+    try {
+        console.log("Facture");
+        var voiture_id = req.params.id;
+        const data = req.body
+        console.log(voiture_id);
+        User.updateOne({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.bonDeSortie': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log(model);
+                return res.json(model);
+            });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
 })
 
 router.put('/voiture_reparer/:id', async (req, res) => {
@@ -309,18 +314,18 @@ router.put('/voiture_reparer/:id', async (req, res) => {
         var voiture_id = req.params.id;
         const data = req.body
         User.update({ 'voiture._id': voiture_id },
-        {
-            '$set': {
-                'voiture.$.estTerminer': true,
-            }
-        },
-        function (err, model) {
-            if (err) {
-                console.log(err);
-                return res.send(err);
-            }
-            return res.json(model);
-        });
+            {
+                '$set': {
+                    'voiture.$.estTerminer': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                return res.json(model);
+            });
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
@@ -340,11 +345,11 @@ router.post('/sendEmail', async (req, res) => {
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
-            service:'gmail',
+            service: 'gmail',
             secure: false,
             auth: {
-               user: 'nomenjanaharymandaaroniaina@gmail.com',
-               pass: 'fukdxneowpfmkjzs'
+                user: 'nomenjanaharymandaaroniaina@gmail.com',
+                pass: 'fukdxneowpfmkjzs'
             },
             debug: false,
             logger: true
@@ -367,7 +372,7 @@ router.post('/sendEmail', async (req, res) => {
             }
         });
 
-        
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: error })
@@ -384,7 +389,8 @@ router.put('/payement/:id', async (req, res) => {
         User.updateOne({ 'voiture._id': voiture_id },
             {
                 '$set': {
-                    'voiture.$.estPayer': true                }
+                    'voiture.$.estPayer': true
+                }
             },
             function (err, model) {
                 if (err) {
@@ -400,4 +406,83 @@ router.put('/payement/:id', async (req, res) => {
         res.status(500).json({ msg: error })
     }
 })
+
+router.post('/ajout_materiel/:id/:idVoiture', async (req, res) => {
+    try {
+        console.log("Mande ny code")
+        var user_id = req.params.id;
+        var voiture_id = req.params.idVoiture;
+        console.log("Ajout materiel: ",req.body.materiel);
+        console.log("Id voiture:", voiture_id);
+        console.log("User voiture:", user_id);
+        var add = "voiture." + voiture_id + ".materiel";
+        console.log(add);
+        User.findByIdAndUpdate(
+            user_id,
+            { $push: { [add]: req.body.materiel } },
+
+            { safe: true, upsert: true }, (err, model) => {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log("modele:", model);
+                return res.json(model);
+            });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+
+router.post('/ajout_voiture/:id', async (req, res) => {
+    try {
+        console.log("Mande ny code")
+        var user_id = req.params.id;
+        console.log("Ajout voiture: ",req.body.voiture);
+        User.findByIdAndUpdate(
+            user_id,
+            { $push: { "voiture": req.body.voiture } },
+
+            { safe: true, upsert: true }, (err, model) => {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log("modele:", model);
+                return res.json(model);
+            });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+
+router.delete('/delete_voiture/:id/:idVoiture', async (req, res) => {
+    try {
+        console.log("Supprimer voiture");
+        var user_id = req.params.id;
+        var voiture_id = req.params.idVoiture;
+        console.log("Delete voiture: ", user_id + " - " + voiture_id);
+        User.findByIdAndUpdate(
+            user_id,
+            { $pull: { 'voiture': { _id: voiture_id } } }, function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log(model);
+                return res.json(model);
+            });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+
+
 module.exports = router;
