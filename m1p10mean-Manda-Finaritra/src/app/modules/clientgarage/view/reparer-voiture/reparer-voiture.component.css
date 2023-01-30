@@ -176,10 +176,7 @@
 
 }
 
-@font-face {
-    font-family: "BebasNeue Regular";
-    
-}
+
 
 #navbarontop>li>a {
     font-family: 'BebasNeue Regular';
@@ -504,10 +501,6 @@
 }
 
 .navbar-default .textcostume {
-    border-color: #fff;
-}
-
-.navbar-default .textcostume . {
     border-color: #fff;
 }
 
@@ -1797,7 +1790,6 @@
 
     }
 
-    .bottomlinks>li>a {}
 
     .bottomlinks>li {
         float: none;
@@ -1831,8 +1823,6 @@
         padding-left: 20px;
 
     }
-
-    .bottomlinks>li>a {}
 
     .bottomlinks>li {
         float: none;
@@ -2291,7 +2281,6 @@ header {
 h1 {
     display: inline-block;
     z-index: 111;
-    float: left;
     padding: 27px 0 0 21px;
 }
 
@@ -2354,8 +2343,6 @@ ul.menu li a {
     overflow: hidden;
 }
 
-ul.menu li:hover,
-ul.menu li.current {}
 
 ul.menu li:hover a.home,
 ul.menu li.current a.home {

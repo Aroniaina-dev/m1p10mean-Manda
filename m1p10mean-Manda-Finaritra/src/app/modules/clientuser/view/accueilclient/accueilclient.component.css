@@ -505,9 +505,6 @@
      border-color: #fff;
  }
 
- .navbar-default .textcostume . {
-     border-color: #fff;
- }
 
  .navbarborder>li {
      margin-right: 9px;
@@ -1836,7 +1833,6 @@
 
      }
 
-     .bottomlinks>li>a {}
 
      .bottomlinks>li {
          float: none;
@@ -2299,7 +2295,6 @@
  h1 {
      display: inline-block;
      z-index: 111;
-     float: left;
      padding: 27px 0 0 21px;
  }
 
@@ -2361,9 +2356,6 @@
      padding: 19px 22px 21px 22px;
      overflow: hidden;
  }
-
- ul.menu li:hover,
- ul.menu li.current {}
 
  ul.menu li:hover a.home,
  ul.menu li.current a.home {
