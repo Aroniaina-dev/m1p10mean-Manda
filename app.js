@@ -22,17 +22,15 @@ const verifyToken = (req, res, next) => {
     return next();
 };
 
-// router.use(express.static(path.join(__dirname, 'dist')));
+router.use(express.static(path.join(__dirname, 'dist')));
 router.use('/users', userRouter)
 router.use('/materiels', materielRouter)
 router.use('/voitures', voitureRouter)
 router.use('/voitureTemp', voitureTempRouter)
 
-// router.get('/', (req, res) => {
-//     res.send({ message: 'Hello Manda Aroniaina NOMENJANHARY' });
-// });
-// router.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'dist/index.html'));
-// });
+
+router.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
 module.exports = router;
