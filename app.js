@@ -3,6 +3,7 @@ const router = express();
 const userRouter = require('./src/routes/user.routes');
 const materielRouter = require('./src/routes/materiel.routes');
 const voitureRouter = require('./src/routes/voiture.routes');
+const voitureTempRouter = require('./src/routes/voitureTemp.routes');
 const path = require('path');
 
 
@@ -21,16 +22,17 @@ const verifyToken = (req, res, next) => {
     return next();
 };
 
-router.use(express.static(path.join(__dirname, 'dist')));
+// router.use(express.static(path.join(__dirname, 'dist')));
 router.use('/users', userRouter)
 router.use('/materiels', materielRouter)
 router.use('/voitures', voitureRouter)
+router.use('/voitureTemp', voitureTempRouter)
 
 // router.get('/', (req, res) => {
 //     res.send({ message: 'Hello Manda Aroniaina NOMENJANHARY' });
 // });
-router.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+// router.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+// });
 
 module.exports = router;

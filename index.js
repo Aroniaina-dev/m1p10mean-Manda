@@ -7,7 +7,9 @@ const app = express();
 //importation des routes
 const materielRoute = require('./src/routes/materiel.routes');
 const userRoute = require('./src/routes/user.routes');
+const usersRoute = require('./src/routes/users.routes');
 const voitureRoute = require('./src/routes/voiture.routes');
+const voitureTempRoute = require('./src/routes/voitureTemp.routes');
 
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -27,6 +29,8 @@ const port = process.env.PORT || 3000
 app.use('/api/materiel/', materielRoute);
 app.use('/api/user/', userRoute);
 app.use('/api/voiture/', voitureRoute);
+app.use('/api/voitureTemp/', voitureTempRoute);
+app.use('/api/users/', usersRoute);
 app.use('/', routes);
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)

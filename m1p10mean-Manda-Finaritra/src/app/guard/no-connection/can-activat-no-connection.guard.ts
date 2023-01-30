@@ -15,7 +15,18 @@ export class CanActivatNoConnectionGuard implements CanActivate {
     if (!this.authentificationService.loggedIn()) {
       return true;
     } else {
-      this.router.navigate(['/atelier']);
+      const user = this.authentificationService.getUser();
+      console.log("User temps: ", user);
+      if(user?.loginType == 0){
+        this.router.navigate(['/clientuser']);
+      }
+      else if(user?.loginType == 1){
+        this.router.navigate(['/atelier']);
+      }
+      else if(user?.loginType == 2){
+        this.router.navigate(['/financier']);
+      }
+      
       return false;
     }
   }

@@ -6,6 +6,7 @@ import { AtelierService } from 'src/app/services/AtelierService/atelier.service'
 import { User } from 'src/app/models/user';
 import { Voiture } from 'src/app/models/voiture';
 import { Materiel } from 'src/app/models/materiel';
+import jsPDF from 'jspdf';
 
 
 
@@ -47,16 +48,26 @@ export class ListeVoitureComponent implements OnInit {
     this.voitureInitForm(new Voiture);
   }
 
-  initData(): void {
+  async initData(): Promise<void> {
     try {
       this.load = true;
       this.atelierService.getAll(0).subscribe((res) => {
         this.dataResultUser = res;
         this.load = false;
+        console.log(this.dataResultUser);
       });
     } catch (error) {
       alert(error);
     }
+
+    const user = await this.atelierService.getAll(0).toPromise() as User[];
+    if(user){
+      this.dataResultUser = user;
+      console.log(this.dataResultUser);
+    }else{
+      console.log("tsy misy uer");
+    }
+    
   }
 
   initDataVoitureTerminer(): void {
@@ -82,7 +93,6 @@ export class ListeVoitureComponent implements OnInit {
       loginType: [user.loginType],
       voiture: [user.voiture],
     });
-    console.log(this.userForm.value.nom);
   }
 
   voitureInitForm(voiture: Voiture): void {
@@ -116,7 +126,6 @@ export class ListeVoitureComponent implements OnInit {
       body: [this.bodyEmail],
       objet: ["Voiture réparé"]
     });
-    console.log(this.emailForm.value);
   }
 
   getVoitureEmail(modele: string, marque:string, immatriculation: string){
@@ -277,4 +286,14 @@ export class ListeVoitureComponent implements OnInit {
     });
   }
 
+ @ViewChild('content') content!: ElementRef;
+ savePdf() {
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const pdfTable = this.content.nativeElement;
+  doc.html(pdfTable.innerHTML, {
+    callback(rst) {
+      rst.save('one.pdf');
+    },
+  });
+}
 }

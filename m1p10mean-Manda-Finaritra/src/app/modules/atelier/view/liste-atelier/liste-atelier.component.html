@@ -20,39 +20,46 @@
                                             </thead>
                                             <tbody *ngIf="dataResultUser.length > 0 && !loaderView">
                                                 <tr *ngFor="let d of dataResultUser; let i = index">
-                                                    <td class="text-center">{{i + 1}}</td>
-                                                    <td>{{d.nom}}</td>
                                                     <td *ngFor="let v of d.voiture; let j = index">
                                                         <div *ngIf="v.estDansLeGarage == false">
                                                             <div class="card shadow" style="width: 18rem;">
                                                                 <div class="card-header">
                                                                     {{j+1}} - {{v.marque}} {{v.modele}}
-                                                                  </div>
+                                                                </div>
                                                                 <div class="card-body">
                                                                     <ul>
-                                                                        <li *ngFor="let m of v.materiel; let k = index">. {{m.designationMateriel}} - {{m.prixReparation}} Ar</li>                                                                
+                                                                        <li *ngFor="let m of v.materiel; let k = index">
+                                                                            . {{m.designationMateriel}} -
+                                                                            {{m.prixReparation}} Ar</li>
                                                                         <li>TOTAL: {{getTotal(v.materiel)}}</li>
                                                                     </ul>
                                                                 </div>
                                                                 <div class="card-footer">
-                                                                    <button class="btn btn-info btn-block btn-sm" (click)="addToGarage(d, v._id)">
+                                                                    <button class="btn btn-primary btn-block btn-sm"
+                                                                        (click)="ajouterMateriel(d, v._id)">
+                                                                        Ajouter
+                                                                        materiel
+                                                                    </button>
+                                                                    <button class="btn btn-info btn-block btn-sm"
+                                                                        (click)="addToGarage(d, v._id)">
                                                                         Ajouter
                                                                         dans le garage
                                                                     </button>
                                                                     <button class="btn btn-danger btn-block btn-sm"
-                                                                        (click)="initForm(d)" data-toggle="modal"
+                                                                        (click)="initForm(d); getIdVoiture(v._id)" data-toggle="modal"
                                                                         data-target="#deleteModal">
                                                                         Supprimer
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                    </div>               
-                                                    </td>                                                                    
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             <tbody *ngIf="dataResultUser.length == 0 && !loaderView">
                                                 <tr>
-                                                    <td colspan="4" class="text-center">Aucune voiture dans l'atelier</td>
+                                                    <td colspan="4" class="text-center">Aucune voiture dans l'atelier
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             <tbody *ngIf="loaderView">
@@ -61,12 +68,48 @@
                                                             class="fa fa-spinner fa-spin"></i></td>
                                                 </tr>
                                             </tbody>
-                                        </table>                    
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <button type="button" id="deleteCloseModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center mb-4">
+                    <h2>Supprimer</h2>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    <form [formGroup]="userForm" (ngSubmit)="delete()">
+                        <div class="form-group">
+                            <p>Etes-vous sûr de supprimer dans l'atelier?</p>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="button" (click)="noDelete()" class="btn btn-secondary mr-2"> Annuler</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i *ngIf="loader" style="margin-left: -12px; margin-right: 8px;"
+                                    class="fa fa-circle-o-notch fa-spin"></i>
+                                <ng-container *ngIf="!loader"> Supprimer</ng-container>
+                                <ng-container *ngIf="loader"> Suppression en cours</ng-container>
+                            </button>
+
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>

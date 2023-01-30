@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   loader = false;
   email: string = "";
   password: string = "";
+  isAdmin = false;
 
   constructor(private router: Router, private authentificationService: AuthentificationService, private readonly fb: FormBuilder, private toastr: ToastrService) {
 
@@ -36,6 +37,10 @@ export class LoginComponent implements OnInit {
     return this.formGroup.controls;
   }
 
+  changeIsAdmin(){
+    this.isAdmin = !this.isAdmin;
+  }
+
   login(): void {
     if (this.formGroup.valid) {
       this.loader = true;
@@ -49,6 +54,10 @@ export class LoginComponent implements OnInit {
           }
           else if(res.user.loginType ==2){
             this.router.navigate(['/financier']);
+          }
+          else{
+            console.log("Mande ny mande")
+            this.router.navigate(['/clientuser']);
           }
         }
       }, error => {

@@ -6,8 +6,9 @@
                 <app-navbar></app-navbar>
                 <div class="container-fluid">                    
                     <div class="row mt-3">
-                            
+                        
                         <div class="col-md-8">
+                                                    
                             <h3 class="text-dark mb-1">Liste voiture à réparé</h3>
                             <div class="card shadow">
                                 <div class="card-body">
@@ -147,7 +148,7 @@
     </div>
 </div>
 <!-- Modal bon de sorite-->
-<div class="modal fade bd-example-modal-lg" id="modalBonDeSortie" tabindex="-1" role="dialog" aria-labelledby="modalBonDeSortieLabel"
+<div class="modal fade bd-example-modal-lg" id="modalBonDeSortie" #modalBonDeSortie tabindex="-1" role="dialog" aria-labelledby="modalBonDeSortieLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="contenue">
@@ -156,7 +157,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="content" #content>
                 <div class="form-title text-center mb-4">
                     <h2>Bon de sortie</h2>
                 </div>
@@ -242,9 +243,14 @@
                 </div>
                         
             </div>
+            <!-- <div id="content" #content>
+                <h1>Manda Aroniaina</h1>
+            </div> -->
+        <!-- <button class="btn btn-warning mb-2" (click)="savePdf()">PDF</button> -->
+
             <div class="modal-footer">
                 <button class="btn btn-success" type="button" (click)="validerBonDeSortie(this.userForm.value,this.voitureForm.value._id)" *ngIf="this.voitureForm.value.bonDeSortie == false">Valider</button>
-                <button class="btn btn-primary" type="button" id="gerarPDF">Exporter en PDF</button>
+                <button class="btn btn-primary" type="button" (click)="savePdf()">Exporter en PDF</button>
             </div>
         </div>
     </div>

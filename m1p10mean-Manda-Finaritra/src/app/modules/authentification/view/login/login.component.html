@@ -1,3 +1,81 @@
+<div class="d-flex justify-content-center align-items-center align-self-center">
+    <div class="contents">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-12">
+                    <div class="form-block mx-auto" style="margin-top: 20px; margin-bottom: 20px;">
+                        <div class="text-center mb-5">
+                            <img src="assets/img/autog.jpg" alt="">
+                        </div>
+                        <form [formGroup]="formGroup" (ngSubmit)="login()">
+                            <div class="form-group">
+                                <label class="form-control-label"><i class="fa fa-user" aria-hidden="true"></i> EMAIL</label>
+                                <input type="text" [(ngModel)]="email" name="email" formControlName="email"
+                                    class="form-control">
+                            </div>
+        
+                            <div class="form-group">
+                                <label class="form-control-label"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                    PASSWORD</label>
+                                <input type="password" class="form-control" [(ngModel)]="password" name="password"
+                                    formControlName="password" i>
+                            </div>
+        
+        
+                            <div class="container-login100-form-btn">
+                                <div class="wrap-login100-form-btn">
+                                    <div class="login100-form-bgbtn"></div>
+                                    <input type="submit" value="Log In" class="btn btn-block py-2 btn-primary">
+                                </div>
+                            </div>
+                            
+
+                            <span class="or" style="text-align: center; margin-left: 50%;">or</span>
+
+
+                            <div class="reseau"  *ngIf="!isAdmin">
+                                <div class="facebook">
+                                    <a href="" class="btn btn-block btn-info btn-rounded" data-mdb-ripple-color="dark" (click)="signUp()">
+                                        <span class="icon-facebook mr-3"></span>Inscription
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="kc-registration">
+                            <span style="text-align: center; margin-left: 35%;"><input type="checkbox" aria-label="Checkbox for following text input"  (click)="changeIsAdmin()">Is Admin ? <a tabindex="6">Atelier/Financier</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
@@ -38,55 +116,24 @@
                             <button class="login100-form-btn">
                                 Login
                             </button>
+
                         </div>
                     </div>
 
+                    <a (click)="changeIsAdmin()">Is admin?</a>
+
+                    <div class="container-login100-form-btn" *ngIf="!isAdmin">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button type="button" (click)="signUp()" class="login100-form-btn">
+                                Inscription
+                            </button>
+                        </div>
+                    </div>
                     <div class="text-center p-t-115">
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="login-dark">
-  <form method="post" [formGroup]="formGroup" (ngSubmit)="login()">
-      <h2 class="sr-only">Login</h2>
-      <div class="illustration"><i class="icon ion-home"></i></div>
-      <div class="form-group">
-          <input class="form-control" type="email" [(ngModel)]="email"
-              [ngClass]="{'is-valid': c.email.valid, 'is-invalid': c.email.invalid && (c.email.dirty || c.email.touched)}"
-              name="email" formControlName="email" placeholder="Email">
-          <div class="invalid-feedback">
-              Email required
-          </div>
-      </div>
-      <div class="form-group">
-          <input class="form-control" type="password" [(ngModel)]="password"
-              [ngClass]="{'is-valid': c.password.valid, 'is-invalid': c.password.invalid && (c.password.dirty || c.password.touched)}"
-              name="password" formControlName="password" placeholder="Mot de passe">
-          <div class="invalid-feedback">
-              Password required
-          </div>
-      </div>
-      <div class="form-group">
-        <button *ngIf="!loader" [disabled]="loader || !formGroup.valid" class="btn btn-primary btn-block"
-        type="submit">Se Connecter</button>
-    <button *ngIf="loader" class="btn btn-primary btn-block" type="button" disabled><i
-            class="fa fa-spinner fa-spin"></i> Connexion en cours...</button>
-    <button *ngIf="!loader" [disabled]="loader" class="btn btn-success btn-block" type="button"
-        (click)="signUp()">S'inscrire</button>      </div>
-  </form>
 </div> -->
