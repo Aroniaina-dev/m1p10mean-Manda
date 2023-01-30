@@ -1770,10 +1770,7 @@
 
 }
 
-.bottomsocial>a {
-    color: #C59E47;
-    padding-right: 20px;
-}
+
 
 .bottomsocial>a:hover {
     color: #191919;
@@ -1802,7 +1799,7 @@
 
     }
 
-    .bottomlinks>li>a {}
+
 
     .bottomlinks>li {
         float: none;
