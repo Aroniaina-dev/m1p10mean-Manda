@@ -13,6 +13,32 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "core-js",
+              "raf",
+              "xlsx",
+              "@babel/runtime",
+              "jspdf",
+              "raf",
+              "@babel/runtime-corejs3",
+              "uuid",
+              "ulid",
+              "lodash/get",
+              "lodash/isEmpty",
+              "lodash/isEqual",
+              "@aws-amplify/core",
+              "buffer",
+              "@aws-crypto/sha256-js",
+              "crypto-js/hmac-sha256",
+              "crypto-js/lib-typedarrays",
+              "zen-observable",
+              "js-cookie",
+              "isomorphic-unfetch",
+              "@aws-crypto/crc32",
+              "fast-xml-parser",
+              "@aws-crypto/sha256-browser",
+              "axios"
+            ],
             "outputPath": "../dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -50,7 +76,7 @@
                   "type": "initial",
                   "maximumWarning": "4mb",
                   "maximumError": "5mb"
-               },
+                },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4mb",
@@ -108,8 +134,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           }
         }
       }
