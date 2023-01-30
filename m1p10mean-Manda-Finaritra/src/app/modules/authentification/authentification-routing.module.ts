@@ -9,8 +9,6 @@ import { ClientGuardGuard } from 'src/app/guard/clietnGuard/client-guard.guard';
 
 
 const routes: Routes = [
-  // { path: '', component: LoginclientComponent},
-  { path: 'signUpClient', component: SignUpClientComponent},
   { path: '', component: LoginComponent, canActivate: [CanActivatNoConnectionGuard] },
   { path: 'signUp', component: SignUpComponent },
 ];

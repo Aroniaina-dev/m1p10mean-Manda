@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  signUp() {
+  signUpClient() {
     this.router.navigate(['/login/signUp']);
   }
 }
