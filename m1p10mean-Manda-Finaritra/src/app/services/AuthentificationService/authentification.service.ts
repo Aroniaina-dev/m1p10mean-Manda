@@ -6,6 +6,7 @@ import { HttpResponseModel } from "../../models/http-response-model";
 import { environment } from '../../../environments/environment';
 import { User } from "../../models/user";
 import { Users } from 'src/app/models/users';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthentificationService {
   user: any;
   users: any;
   
-  constructor(private httpClient: HttpClient, private securiteService: SecuriteService) {
+  constructor(private httpClient: HttpClient, private securiteService: SecuriteService, private router: Router) {
     this.loadToken();
   }
 
@@ -57,12 +58,14 @@ export class AuthentificationService {
    * Permet de recuper l'user dans le session storage
    */
   getUser(): User | undefined {
-    const stringUserCrypted = localStorage.getItem('user');
+    const stringUserCrypted = localStorage.getItem('users');
     if (stringUserCrypted) {
       const stringUser = this.securiteService.decryptData(stringUserCrypted);
       if (stringUser) {
         return JSON.parse(stringUser);
       }
+    }else{
+      this.router.navigate(['/login']);
     }
     return undefined;
   }
@@ -117,6 +120,7 @@ export class AuthentificationService {
   clearUserStorage(): void {
     this.authToken = null;
     this.user = null;
+    console.log("Loca storage clear")
     localStorage.clear();
 
   }
@@ -133,7 +137,7 @@ export class AuthentificationService {
     }
     const cryptedData = this.securiteService.encryptData(JSON.stringify(user));
     if (cryptedData) {
-      localStorage.setItem('user', cryptedData);
+      localStorage.setItem('users', cryptedData);
     }
     this.authToken = token;
     this.user = user;

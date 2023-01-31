@@ -357,7 +357,7 @@ router.post('/sendEmail', async (req, res) => {
 
         let mailOptions = {
             from: 'nomenjanaharymandaaroniaina@gmail.com',
-            to: 'nomenjanaharymanda9@gmail.com',
+            to: data.email,
             subject: data.objet,
             text: data.body
         };
@@ -483,6 +483,73 @@ router.delete('/delete_voiture/:id/:idVoiture', async (req, res) => {
     }
 })
 
+router.get('/voitureTemp', async (req, res) => {
+    try {
+        console.log("Stat");
+        const result = await User.find({
+            "loginType": "0",
+        });
+        // console.log("Get all client type: ", result);
+        res.json(result);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.put('/payer/:id', async (req, res) => {
+    try {
+        console.log("Facture");
+        var voiture_id = req.params.id;
+        const data = req.body
+        console.log(voiture_id);
+        User.updateOne({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.payer': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log(model);
+                return res.json(model);
+            });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
+
+router.put('/estPayer/:id', async (req, res) => {
+    try {
+        console.log("Facture");
+        var voiture_id = req.params.id;
+        const data = req.body
+        console.log(voiture_id);
+        User.updateOne({ 'voiture._id': voiture_id },
+            {
+                '$set': {
+                    'voiture.$.estPayer': true,
+                }
+            },
+            function (err, model) {
+                if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
+                console.log(model);
+                return res.json(model);
+            });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: error })
+    }
+})
 
 
 module.exports = router;

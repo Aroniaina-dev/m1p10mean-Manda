@@ -31,26 +31,43 @@ export class InsererVoitureComponent implements OnInit {
   voitureForm!: FormGroup;
   loader: boolean = false;
   lisetVoiture!: Voiture[];
+  lisetVoitureTemp!: Voiture;
   prixFinalTemp!: number;
   userCache = new User();
+  oneUser!: User;
+  listeVoitureUser!: User;
 
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
+    private formVoiture: FormBuilder,
     private userService: UserService,
     private authentificationService: AuthentificationService,
+    private atelierService: AtelierService,
     private toastr: ToastrService,) { }
 
   ngOnInit(): void {
     this.initForm(new Voiture());
+    this.initData();
+  }
+
+  initData() {
     const user: User | undefined = this.authentificationService.getUser();
-    if(user){
-      console.log(user);
-      this.lisetVoiture = user.voiture;
-      console.log(this.lisetVoiture);
+    if (user) {
+      this.oneUser = user;
+      console.log("Temp voiture: ",this.lisetVoitureTemp);
+      this.lisetVoiture = this.oneUser.voiture;
+      console.log("Form:", this.voitureForm.value);
+      this.lisetVoitureTemp = this.voitureForm.value;
+      if(this.voitureForm.value){
+        console.log("Miditra ato");
+        if(this.lisetVoitureTemp.marque){
+          this.lisetVoiture.push(this.lisetVoitureTemp);
+        }
+      }
     }
-    if(user){
+    if (user) {
       this.userCache = user;
     }
   }
@@ -71,63 +88,77 @@ export class InsererVoitureComponent implements OnInit {
     });
   }
 
+  initFormVoiture(voiture: Voiture): void {
+    this.voitureForm = this.formVoiture.group({
+      _id: [voiture._id],
+      immatriculation: [voiture.immatriculation, [Validators.required]],
+      marque: [voiture.marque, [Validators.required]],
+      modele: [voiture.modele],
+      materiel: [voiture.materiel],
+      estDansLeGarage: [voiture.estDansLeGarage],
+      dateEntrerGarage: [voiture.dateEntrerGarage],
+      dateSortieGarage: [voiture.dateSortieGarage],
+      estTerminer: [voiture.estTerminer],
+      bonDeSortie: [voiture.bonDeSortie],
+      payer: [voiture.payer],
+      estPayer: [voiture.estPayer]
+    });
+    console.log(this.voitureForm.value.materiel);
+  }
+
   ajouterVoiture() {
     const user: User | undefined = this.authentificationService.getUser();
     console.log(user?._id);
 
     if (this.voitureForm.valid) {
-      if(user){
-        this.loader = true;
+      if (user) {
+        this.loader = true;        
         this.userService.addCar(this.voitureForm.value, user._id).subscribe(res => {
           this.loader = false;
-          if (!res.error) {
+          if (res) {
             this.toastr.success('La voiture a été ajouté');
-            this.ngOnInit();
+            this.lisetVoiture.push(this.voitureForm.value);
+            this.lisetVoitureTemp = this.voitureForm.value;
+            this.initData();
           } else {
-            this.toastr.error(res.message);
+            this.toastr.error(res);
           }
         }, error => {
           this.loader = false;
         });
       }
-      
+
     }
   }
 
-  getEtatVoiture(estDansLeGarage:boolean, estTerminer: boolean){
+  getEtatVoiture(estDansLeGarage: boolean, estTerminer: boolean) {
     let retour = "";
-    if(estDansLeGarage == true && estTerminer ==false){
+    if (estDansLeGarage == true && estTerminer == false) {
       retour = "Dans le garage";
     }
-    else if(estDansLeGarage == true && estTerminer ==true){
+    else if (estDansLeGarage == true && estTerminer == true) {
       retour = "Terminé";
     }
-    else{
+    else {
       retour = "En cours de traitement";
     }
     return retour;
   }
 
-  getProgression(materiel: Materiel[]){
+  getProgression(materiel: Materiel[]) {
     let evolutionFinal = 0;
     let evolutionTotal = materiel.length;
-    console.log(materiel);
-      let evolution = 0;
+    let evolution = 0;
     for (let index = 0; index < materiel.length; index++) {
-      if(materiel[index].estReparer == true){
+      if (materiel[index].estReparer == true) {
         evolution += 1;
       }
     }
-    evolutionFinal = (evolution * 100) /evolutionTotal;
-    return evolutionFinal.toFixed(2);
-  }
-
-  getTotal(prix: Materiel[]){
-    let total = 0;
-    for (let index = 0; index < prix.length; index++) {
-      total = total + prix[index].prixReparation;
+    evolutionFinal = (evolution * 100) / evolutionTotal;
+    if (evolution) {
+      return evolutionFinal.toFixed(2);
     }
-    return total;
+    return 0;
   }
 
   lougout() {
@@ -138,7 +169,40 @@ export class InsererVoitureComponent implements OnInit {
     }
   }
 
-  toHome(){
+  toHome() {
     this.router.navigate(['clientuser']);
+  }
+
+  payerFacture(idVoiture: string) {
+    this.loader = true;
+    console.log(idVoiture);
+    this.atelierService.changeStatesPayer(this.userCache, idVoiture).subscribe(res => {
+      this.loader = false;
+      if (res) {
+        this.toastr.success("Facture payé");
+        this.ngOnInit();
+        this.closeModalBonDeSortie();
+      } else {
+        this.toastr.error(res);
+      }
+    }, error => {
+      this.loader = false;
+    });
+  }
+
+  getTotal(prix: Materiel[]) {
+    console.log(prix);
+    let total = 0;
+    for (let index = 0; index < prix.length; index++) {
+      total = total + prix[index].prixReparation;
+    }
+    return total;
+  }
+
+  closeModalBonDeSortie() {
+    const btn = document.getElementById('modalBonDeSortie');
+    if (btn) {
+      btn.click();
+    }
   }
 }

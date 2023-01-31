@@ -16,10 +16,13 @@
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th>Propriétaire</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="dataResultUser.length > 0 && !loaderView">
                                                 <tr *ngFor="let d of dataResultUser; let i = index">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{d.nom}}</td>
                                                     <td *ngFor="let v of d.voiture; let j = index">
                                                         <div *ngIf="v.estDansLeGarage == false">
                                                             <div class="card shadow" style="width: 18rem;">
