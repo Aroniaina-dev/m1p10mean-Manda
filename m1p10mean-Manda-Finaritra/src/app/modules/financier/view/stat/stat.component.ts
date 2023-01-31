@@ -59,6 +59,7 @@ export class StatComponent implements OnInit {
 	loyer = 50;
 	autreDepenseParMois = 0;
 	data!: VoitureTemp[];
+	dataStat!: User[];
 	myNumber!: number;
 
 	listeVoitureTemp!: VoitureTemp[];
@@ -74,9 +75,10 @@ export class StatComponent implements OnInit {
 		console.log(this.data);
 		this.getAllVoitureTempBase();
 		this.getJourMoisDeLAnnee("2021", "05");
-		this.initLabel();
+		await this.initLabel();
 		await this.initFormBenefice();
 		this.initChartBeneficeParJour("01");
+		await this.tesFunction();
 	}
 
 	initFormBenefice(): void {
@@ -93,10 +95,12 @@ export class StatComponent implements OnInit {
 	}
 
 	getAllVoitureTempBase(): void {
-		try {
+		try {			
 			this.load = true;
 			this.atelierService.getAllVoitureTemp().subscribe((res) => {
+				console.log(res);
 				this.listeVoitureTemp = res;
+				console.log("Result ",res);
 				for (let i = 0; i < this.listeVoitureTemp.length; i++) {
 					for (let j = 0; j < this.listeVoitureTemp[i].reparation.length; j++) {
 						const diff = this.calculateDiffDate(this.listeVoitureTemp[i].reparation[j].dateDebutReparation, this.listeVoitureTemp[i].reparation[j].dateFinReparation);
@@ -130,13 +134,13 @@ export class StatComponent implements OnInit {
 		}
 	}
 
-	tesFunction(){
-		console.log(this.karama);
-		console.log(this.loyer);
-		console.log(this.autreDepenseParMois);
+	async tesFunction(){
+		this.dataStat =await this.atelierService.getAllVoitureStat().toPromise() as User[];
+		console.log("Data stat: ",this.dataStat);
 	}
 
-	initLabel(): void {
+	async initLabel(): Promise<void> {
+		this.data = await this.atelierService.getAllVoitureTemp().toPromise() as VoitureTemp[];
 		
 		for (let i = 0; i < this.listeMois.length; i++) {
 			if (this.listeMois[i].getFullYear() == 2022) {
@@ -148,7 +152,7 @@ export class StatComponent implements OnInit {
 		}
 		this.listeFinal.splice(0, 1);
 
-
+		console.log(this.data)
 		for (let i = 0; i < this.data.length; i++) {
 			for (let j = 0; j < this.data[i].reparation.length; j++) {
 				let mois = this.stringAsDate(this.data[i].reparation[j].dateFinReparation).getMonth() + 1;

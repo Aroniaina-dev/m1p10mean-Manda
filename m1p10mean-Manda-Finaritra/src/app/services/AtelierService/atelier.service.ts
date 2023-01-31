@@ -88,6 +88,10 @@ export class AtelierService {
     return this.httpClient.get<VoitureTemp[]>(environment.end_point+"voitureTemp");
   }
 
+  getAllVoitureStat(): Observable<User[]> {
+    return this.httpClient.get<User[]>(environment.end_point+"user/voitureTemp");
+  }
+
   getAllVoitureTempReparation(): Observable<Reparation[]> {
     return this.httpClient.get<Reparation[]>(environment.end_point+"voitureTemp/reparation");
   }
@@ -100,5 +104,9 @@ export class AtelierService {
 
   deleteVoiture(idUser:string,  idVoiture: string): Observable<HttpResponseModel<User>> {
     return this.httpClient.delete<HttpResponseModel<User>>(environment.end_point+"user/delete_voiture/"+idUser+"/"+idVoiture);
+  }
+
+  changeStatesPayer(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/payer/"+idVoiture, user);
   }
 }

@@ -34,12 +34,15 @@
                                                                         <li>TOTAL: {{getTotal(v.materiel)}}</li>
                                                                     </ul>
                                                                 </div>
+                                                                
                                                                 <div class="card-footer">
+                                                                    <h6 *ngIf="!v.payer">Pas encore payer</h6>
                                                                     <button class="btn btn-success btn-block btn-sm"
                                                                         data-toggle="modal"
-                                                                        data-target="#modalPayement" (click)="initForm(d); voitureInitForm(v)">
+                                                                        data-target="#modalPayement" (click)="initForm(d); voitureInitForm(v)" *ngIf="v.payer  && !v.estPayer">
                                                                         Valider
                                                                     </button>
+                                                                    <h6 *ngIf="v.payer && v.estPayer">Valider</h6>
                                                                 </div>
                                                             </div>
                                                     </div>               

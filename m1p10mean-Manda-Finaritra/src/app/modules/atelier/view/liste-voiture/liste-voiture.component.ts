@@ -229,7 +229,8 @@ export class ListeVoitureComponent implements OnInit {
   envoyerEmail(){
     try {
       this.load = true;
-      this.atelierService.sendEmail(this.emailAddress, this.emailForm.value.objet,this.emailForm.value.body).subscribe((res) => {
+      console.log("Email address: ",this.emailForm.value.email);
+      this.atelierService.sendEmail(this.emailForm.value.email, this.emailForm.value.objet,this.emailForm.value.body).subscribe((res) => {
         this.toastr.success('Email bien envoyé');
         this.closeModal();
         this.load = false;

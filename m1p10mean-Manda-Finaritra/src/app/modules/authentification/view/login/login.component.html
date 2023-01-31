@@ -31,22 +31,34 @@
                             </div>
 
 
-                            <span class="or" style="text-align: center; margin-left: 50%;">or</span>
+                            <span class="or" style="text-align: center; margin-left: 50%;" *ngIf="!isAdmin">or</span>
 
                         </form>
                         <div class="reseau" *ngIf="!isAdmin">
                             <div class="facebook">
-                                <a href="" class="btn btn-block btn-info btn-rounded" data-mdb-ripple-color="dark"
-                                    (click)="signUpClient()">
-                                    <span class="icon-facebook mr-3"></span>Inscription
+                                <a class="btn btn-block btn-info btn-rounded" data-mdb-ripple-color="light"
+                                    (click)="signUpClient()" style="color: white;">
+                                    Inscription
                                 </a>
                             </div>
                         </div>
-
-                        <div id="kc-registration">
-                            <span style="text-align: center; margin-left: 35%;"><input type="checkbox"
-                                    aria-label="Checkbox for following text input" (click)="changeIsAdmin()">Is Admin ?
-                                <a tabindex="6">Atelier/Financier</a></span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="changeIsAdminAtelier()">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Atelier
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="changeIsAdminFinancier()">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Financier
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" (click)="changeClient()">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Client
+                            </label>
                         </div>
                     </div>
                 </div>

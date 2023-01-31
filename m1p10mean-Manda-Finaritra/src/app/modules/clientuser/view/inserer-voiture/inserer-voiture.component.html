@@ -274,11 +274,16 @@
                                                                 aria-valuemax="100">{{getProgression(v.materiel)}}%
                                                             </div>
                                                         </div>
+                                                        <button class="btn btn-success" type="button" disabled
+                                                            *ngIf="v.bonDeSortie && !v.estPayer">Attente de validation</button>
+
                                                         <button class="btn btn-success" type="button"
-                                                            *ngIf="v.bonDeSortie">Récupéré</button>
+                                                            *ngIf="v.bonDeSortie && v.estPayer">Récupéré</button>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-success" type="button">Afficher
+                                                        <button class="btn btn-success" data-toggle="modal"
+                                                            data-target="#modalBonDeSortie" (click)="initFormVoiture(v)"
+                                                            type="button">Afficher
                                                             facture</button>
                                                     </td>
                                                     <!-- <td *ngFor="let m of v.materiel, let j = index">
@@ -312,3 +317,59 @@
 </div>
 
 <app-footerclient></app-footerclient>
+
+<!-- Modal voir facture-->
+<div class="modal fade bd-example-modal-lg" id="modalBonDeSortie" #modalBonDeSortie tabindex="-1" role="dialog"
+    aria-labelledby="modalBonDeSortieLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="contenue">
+            <div class="modal-header border-bottom-0">
+                <button type="button" id="updateCloseModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="content" #content>
+                <div class="form-title text-center mb-4">
+                    <h2>FACTURE</h2>
+                </div>
+                <hr>
+
+                <div class="col">
+                    <p>M1 P10 Mean <br>
+                        Antananarivo<br>
+                        MADAGASCAR<br>
+                        +261 33 85 270 76<br></p>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <h4>Informations</h4>
+                        <div class="col-md-6">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Materiel</th>
+                                        <th scope="col">Prix réparation</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let m of this.voitureForm.value.materiel; let i = index">
+                                    <tr>
+                                        <th scope="row">{{i+1}}</th>
+                                        <td>{{m.designationMateriel}}</td>
+                                        <td>{{m.prixReparation}} Ar</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <p>Total:{{getTotal(this.voitureForm.value.materiel)}} Ar</p> -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="button" (click)="payerFacture(this.voitureForm.value._id)" *ngIf="!this.voitureForm.value.payer">Payer</button>
+            </div>
+        </div>
+    </div>
+</div>
