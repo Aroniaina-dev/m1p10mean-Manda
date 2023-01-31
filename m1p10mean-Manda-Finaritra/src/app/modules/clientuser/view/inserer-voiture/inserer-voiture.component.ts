@@ -61,7 +61,6 @@ export class InsererVoitureComponent implements OnInit {
       console.log("Form:", this.voitureForm.value);
       this.lisetVoitureTemp = this.voitureForm.value;
       if(this.voitureForm.value){
-        console.log("Miditra ato");
         if(this.lisetVoitureTemp.marque){
           this.lisetVoiture.push(this.lisetVoitureTemp);
         }
