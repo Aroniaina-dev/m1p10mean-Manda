@@ -277,8 +277,10 @@
                                                         <button class="btn btn-success" type="button" disabled
                                                             *ngIf="v.bonDeSortie && !v.estPayer">Attente de validation</button>
 
-                                                        <button class="btn btn-success" type="button"
-                                                            *ngIf="v.bonDeSortie && v.estPayer">Récupéré</button>
+                                                        <button class="btn btn-success" type="button" (click)="recupererVoiture(v._id)"
+                                                            *ngIf="v.bonDeSortie && v.estPayer && !v.estRecuperer">Récupéré</button>
+
+                                                            
                                                     </td>
                                                     <td>
                                                         <button class="btn btn-success" data-toggle="modal"

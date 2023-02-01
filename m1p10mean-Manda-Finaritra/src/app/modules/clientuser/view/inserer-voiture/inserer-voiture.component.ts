@@ -83,7 +83,8 @@ export class InsererVoitureComponent implements OnInit {
       estTerminer: [this.estTerminer],
       bonDeSortie: [this.bonDeSortie],
       payer: [this.payer],
-      estPayer: [this.estPayer]
+      estPayer: [this.estPayer],
+      estRecuperer: [this.estPayer]
     });
   }
 
@@ -100,7 +101,8 @@ export class InsererVoitureComponent implements OnInit {
       estTerminer: [voiture.estTerminer],
       bonDeSortie: [voiture.bonDeSortie],
       payer: [voiture.payer],
-      estPayer: [voiture.estPayer]
+      estPayer: [voiture.estPayer],
+      estRecuperer: [this.estPayer]
     });
     console.log(this.voitureForm.value.materiel);
   }
@@ -203,5 +205,22 @@ export class InsererVoitureComponent implements OnInit {
     if (btn) {
       btn.click();
     }
+  }
+
+  recupererVoiture(idVoiture: string) {
+    this.loader = true;
+    console.log(idVoiture);
+    this.atelierService.changeStatesRecuperer(this.userCache, idVoiture).subscribe(res => {
+      this.loader = false;
+      if (res) {
+        this.toastr.success("Facture payé");
+        this.ngOnInit();
+        this.closeModalBonDeSortie();
+      } else {
+        this.toastr.error(res);
+      }
+    }, error => {
+      this.loader = false;
+    });
   }
 }

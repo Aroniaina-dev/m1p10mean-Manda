@@ -25,7 +25,8 @@ const schema = new Schema({
         estTerminer: {type:Boolean},
         bonDeSortie: {type: Boolean},
         payer: {type: Boolean},
-        estPayer: {type: Boolean}
+        estPayer: {type: Boolean},
+        estRecuperer: {type: Boolean}
     }],
 }, { timestamps: true });
 

@@ -109,4 +109,8 @@ export class AtelierService {
   changeStatesPayer(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
     return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/payer/"+idVoiture, user);
   }
+
+  changeStatesRecuperer(user: User, idVoiture: string): Observable<HttpResponseModel<User>> {
+    return this.httpClient.put<HttpResponseModel<User>>(environment.end_point+"user/recuperer/"+idVoiture, user);
+  }
 }

@@ -12,5 +12,6 @@ export class Voiture {
     estTerminer!: boolean;
     bonDeSortie!: boolean;
     payer!: boolean;
-    estPayer!: boolean
+    estPayer!: boolean;
+    estRecuperer!:boolean;
 }
